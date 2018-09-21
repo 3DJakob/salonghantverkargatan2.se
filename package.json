@@ -1,0 +1,16 @@
+{
+  "name": "salonghantverkargatan2.se",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify --debug assets/js/app.js -o bundle.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.3.1",
+    "browserify": "^16.2.2"
+  }
+}

@@ -1,0 +1,39 @@
+#page1 {
+  background-image: url(../img/visitkort.jpg)
+}
+
+#page1 .button:hover + a {
+  animation: jump 1s infinite;
+}
+
+@keyframes jump {
+  0%{
+	transform: translateY(0);
+  }
+  20%{
+	transform: translateY(0);
+  }
+  40%{
+	transform: translateY(-10px);
+  }
+  50%{
+	transform: translateY(0);
+  }
+  60%{
+	transform: translateY(-7px);
+  }
+  80%{
+	transform: translateY(0);
+  }
+  100%{
+	transform: translateY(0);
+  }
+}
+
+#page3 { /* img slider */
+  background-color: aliceblue
+}
+
+#page4 {
+  min-height: auto;
+}
