@@ -27,7 +27,7 @@
  * @param {String} key
  * @returns {Promise<ResourceSettings>}
  */
-exports.getResourceSettings = function getResourceSettings (key) {
+export function getResourceSettings (key) {
   return fetch('https://liveapi04.cliento.com/api/vip/settings/' + key)
     .then(function (response) {
       return response.json()

@@ -1,4 +1,4 @@
-exports.getData = function getData () {
+export function getHairdressers () {
   const data = [
     {
       'name': 'Sofia',

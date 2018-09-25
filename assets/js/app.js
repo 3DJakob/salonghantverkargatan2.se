@@ -1,6 +1,6 @@
-const hairDressers = require('../data/hairDressers')
-const dataHandling = require('./data-handling')
-const smoothScroll = require('./smooth-scroll')
+import { getHairdressers } from '../data/hairDressers.js'
+import { getResourceSettings, getResourceServices } from './data-handling.js'
+import {} from './smooth-scroll.js'
 
 /**
  * @typedef {HairDresser} hairDressers[]
@@ -33,7 +33,7 @@ function highlightDayOfTheWeek () {
 
 function populateHairdresserContainer () {
   const hairdresserContainer = document.querySelector('#hairdresserContainer')
-  hairDressers.getData().forEach(hairDresser => {
+  getHairdressers().forEach(hairDresser => {
     const container = document.createElement('div')
     const img = document.createElement('img')
     const ring = document.createElement('div')
@@ -77,7 +77,7 @@ function animateResourceRing (hairDresser) {
 
 /** @param {HairDresser} hairDresser */
 function showServices (hairDresser) {
-  dataHandling.getResourceSettings(hairDresser.key).then(function (resourceSettings) {
+  getResourceSettings(hairDresser.key).then(function (resourceSettings) {
     console.log(resourceSettings)
   })
 }
