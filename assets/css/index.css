@@ -2,6 +2,10 @@
   background-image: url(../img/visitkort.jpg)
 }
 
+#page1 h1 {
+  color: #fff;
+}
+
 #page1 .button:hover + a {
   animation: jump 1s infinite;
 }
@@ -28,6 +32,11 @@
   100%{
 	transform: translateY(0);
   }
+}
+
+#page1 a.down {
+  position: absolute;
+  bottom: 40px;
 }
 
 #page3 { /* img slider */

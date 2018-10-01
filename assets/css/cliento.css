@@ -6,6 +6,11 @@
 
 }
 
+.bookingContainer > div {
+  display: flex;
+  flex-direction: column;
+}
+
 /* Page specific style */
 
 #hairdresserContainer {
@@ -70,8 +75,47 @@
 
 
 /* What? */
-.what {
+#what {
   height: 0;
   overflow: hidden;
   transition: 200ms height;
+}
+
+#resourceServiceContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+#resourceServiceContainer div {
+  display: flex;
+  justify-content: space-between;
+  transition: 200ms;
+}
+
+#resourceServiceContainer div:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+#resourceServiceContainer div p {
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+}
+/*
+#resourceServiceContainer div p:first-of-type {
+  text-align: left;
+} */
+
+#resourceServiceContainer div p:last-of-type {
+  padding-left: 0;
+  min-width: 85px;
+  justify-content: flex-end;
+}
+
+#resourceServiceContainer div i {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: flex-end;
 }

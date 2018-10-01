@@ -10,23 +10,29 @@
   </head>
   <body onload="initiatePage()">
     <div class="page" id="page1">
-        <header>
-          <a href="#page4" class="smooth-scroll">Öppettider</a>
-          <a href="#page5" class="smooth-scroll">Prislista</a>
-        </header>
+      <header>
+        <a href="#page4" class="smooth-scroll">Öppettider</a>
+        <a href="#page5" class="smooth-scroll down">Prislista</a>
+      </header>
+      <h1>Välkommen!</h1>
       <a class="button smooth-scroll" href="#page2">Boka</a>
-      <a class="smooth-scroll" href="#page2"><i class="fas fa-chevron-down"></i></a>
+      <a class="down smooth-scroll" href="#page2"><i class="fas fa-chevron-down fa-2x"></i></a>
     </div>
 
     <div class="page" id="page2">
       <div class="bookingContainer">
         <div class="who">
             <h2>Vem vill du ska klippa dig?</h2>
-            <div id="hairdresserContainer"></div>
+            <div id="hairdresserContainer">
+              <!-- render hair dressers here! -->
+            </div>
         </div>
-        <div class="what">
+        <div id="what">
           <div class="content">
               <h2>Vad vill du boka?</h2>
+              <div id="resourceServiceContainer">
+                <!-- render resource services here! -->
+              </div>
           </div>
         </div>
         <!-- <div class="">
