@@ -11,6 +11,11 @@
   flex-direction: column;
 }
 
+bookingContainer h2 {
+  margin: 0;
+  padding: 10px;
+}
+
 /* Page specific style */
 
 #hairdresserContainer {
@@ -90,9 +95,15 @@
   display: flex;
   justify-content: space-between;
   transition: 200ms;
+  cursor: pointer;
+  border-left: 3px solid transparent;
 }
 
 #resourceServiceContainer div:hover {
+  border-left: 3px solid #333;
+}
+
+#resourceServiceContainer div.activeResourceOption {
   background-color: #333;
   color: #fff;
 }
@@ -102,10 +113,6 @@
   display: flex;
   align-items: center;
 }
-/*
-#resourceServiceContainer div p:first-of-type {
-  text-align: left;
-} */
 
 #resourceServiceContainer div p:last-of-type {
   padding-left: 0;
@@ -118,4 +125,47 @@
   align-items: center;
   flex: 1;
   justify-content: flex-end;
+}
+
+/* When? */
+#when .content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#when .infobar {
+  display: flex;
+  flex-direction: row;
+}
+
+#when .infobar a {
+  display: flex;
+  align-items: center;
+  color: #000;
+  margin: 0 20px;
+}
+
+#when #resourceScheduleContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+#when #resourceScheduleContainer div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100px;
+  height: 100px;
+  /* padding: 10px; */
+  background-color: #333;
+  /* border-radius: 3px; */
+  color: #fff;
+  margin: 10px;
+}
+
+#when #resourceScheduleContainer div * {
+  margin: 0;
 }
