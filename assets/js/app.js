@@ -205,9 +205,9 @@ function populateScheduleContainer (serviceSchedule) {
 /** @param {string} type */
 function scheduleArrowClick (type) {
   if (type === 'forward') {
-    activeSchedule = addDays(activeSchedule, 6)
+    activeSchedule = addDays(activeSchedule, 7)
   } else if (type === 'backward') {
-    activeSchedule = addDays(activeSchedule, -8)
+    activeSchedule = addDays(activeSchedule, -7)
   }
   getServiceSchedule(selectedOptions.service.serviceId, selectedOptions.hairDresser.key, activeSchedule.getFullYear(), weekNumber(activeSchedule)).then(function (serviceSchedule) {
     populateScheduleContainer(serviceSchedule)
@@ -222,7 +222,7 @@ function populateScheduleBoxes (serviceSchedule) {
 
   if (target) {
     target.innerHTML = ''
-    for (let i = startDate; i.getTime() <= oneWeekForward.getTime(); i = addDays(i, 1)) {
+    for (let i = new Date(startDate.getTime()); i.getTime() <= oneWeekForward.getTime(); i = addDays(i, 1)) {
       const column = document.createElement('div')
       const day = document.createElement('div')
       const dayName = document.createElement('h2')
