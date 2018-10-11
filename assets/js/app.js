@@ -79,7 +79,7 @@ function resourceClick (hairDresser) {
     })
     selectedOptions.hairDresser = hairDresser
   } else {
-    showServiceContainer(false)
+    animateContainer(false, '#what')
     selectedOptions = { hairDresser: {}, service: {} }
   }
 }
@@ -143,19 +143,21 @@ function populateResourceContainer (resourceServices) {
   if (!includesSelectedResource) {
     selectedOptions.service = {}
   }
-  showServiceContainer(true)
+  animateContainer(true, '#what')
 }
 
 /** @param {Boolean} state */
-function showServiceContainer (state) {
-  const target = /** @type {HTMLElement} */ document.querySelector('#what')
+/** @param {String} id */
+function animateContainer (state, id) {
+  const target = /** @type {HTMLElement} */ document.querySelector(id)
 
   if (target) {
     if (state) {
-      const items = document.querySelector('#resourceServiceContainer')
-      const header = document.querySelector('#what h2')
-      if (target && items && header) {
-        target.style.height = items.clientHeight + header.clientHeight
+      const items = document.querySelector(id + ' div.content')
+      if (target && items) {
+        target.style.height = items.scrollHeight
+        console.log(target)
+        console.log(items.scrollHeight)
       }
     } else {
       target.style.height = 0
@@ -200,6 +202,7 @@ function getRealDay (date) {
 function populateScheduleContainer (serviceSchedule) {
   populateScheduleDate()
   populateScheduleBoxes(serviceSchedule)
+  animateContainer(true, '#when')
 }
 
 /** @param {string} type */
