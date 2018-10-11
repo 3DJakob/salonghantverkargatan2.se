@@ -128,11 +128,18 @@ bookingContainer h2 {
 }
 
 /* When? */
+#when {
+  height: 0;
+  transition: 200ms;
+  overflow: hidden;
+}
+
 #when .content {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  flex-shrink: 0;
 }
 
 #when .infobar {
@@ -150,6 +157,8 @@ bookingContainer h2 {
 #when #resourceScheduleContainer {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 #when #resourceScheduleContainer div {
