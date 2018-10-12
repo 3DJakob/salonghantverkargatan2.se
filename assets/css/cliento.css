@@ -5,6 +5,7 @@
 .bookingContainer {
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100vw;
 }
 
@@ -84,6 +85,8 @@ bookingContainer h2 {
 #what {
   height: 0;
   overflow: hidden;
+  max-width: 960px;
+  width: 100vw;
   transition: 200ms height;
 }
 
