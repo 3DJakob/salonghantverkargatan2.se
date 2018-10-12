@@ -3,7 +3,9 @@
 }
 
 .bookingContainer {
-
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
 }
 
 .bookingContainer > div {
@@ -20,7 +22,6 @@ bookingContainer h2 {
 
 #hairdresserContainer {
   display: flex;
-  max-width: 90vw;
   flex-wrap: wrap;
   /* align-items: center; */
   justify-content: center;
