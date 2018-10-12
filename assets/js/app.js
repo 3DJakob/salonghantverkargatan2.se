@@ -1,6 +1,6 @@
 import { getHairdressers } from '../data/hairDressers.js'
 import { getResourceSettings, getResourceServices, getServiceSchedule, Service, ServiceSchedule } from './data-handling.js'
-import {} from './smooth-scroll.js'
+import { smoothScrollTo } from './smooth-scroll.js'
 import { weekNumber } from './weeknumber.js'
 // const weeknumber = require('weeknumber')
 // import weeknumber from 'weeknumber'
@@ -144,6 +144,7 @@ function populateResourceContainer (resourceServices) {
     selectedOptions.service = {}
   }
   animateContainer(true, '#what')
+  smoothScrollTo('#what')
 }
 
 /** @param {Boolean} state */
@@ -201,6 +202,7 @@ function populateScheduleContainer (serviceSchedule) {
   populateScheduleDate()
   populateScheduleBoxes(serviceSchedule)
   animateContainer(true, '#when')
+  smoothScrollTo('#when')
 }
 
 /** @param {string} type */

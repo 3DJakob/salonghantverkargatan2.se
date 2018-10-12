@@ -113,7 +113,7 @@
       : -1 + (4 - 2 * t) * t
   }
 
-  function smoothScrollTo (href) {
+  const smoothScrollTo = (href) => {
     var start = window.performance.now();
     var target = document.getElementById(href.substring(1));
 
@@ -137,7 +137,7 @@
     }
 
     window.requestAnimationFrame(update);
-  }
+  };
 
   var elements = Array.from(document.querySelectorAll('.smooth-scroll'));
 
@@ -147,10 +147,6 @@
       smoothScrollTo(element.getAttribute('href'));
     });
   }
-
-  // const weeknumber = require('weeknumber')
-  // import weeknumber from 'weeknumber'
-  // import { weekNumber } from './weeknumber.js'
 
   const monthNames = ['Jan', 'Feb', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
   const dayNames = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön'];
@@ -290,6 +286,7 @@
       selectedOptions.service = {};
     }
     animateContainer(true, '#what');
+    smoothScrollTo('#what');
   }
 
   /** @param {Boolean} state */
@@ -347,6 +344,7 @@
     populateScheduleDate();
     populateScheduleBoxes(serviceSchedule);
     animateContainer(true, '#when');
+    smoothScrollTo('#when');
   }
 
   /** @param {string} type */
@@ -366,7 +364,6 @@
     const target = document.getElementById('resourceScheduleContainer');
     const startDate = activeSchedule;
     const oneWeekForward = addDays(new Date(startDate.getTime()), 6);
-    console.log(serviceSchedule);
 
     // /** @param {ServiceScheduleslot} slot */
     const renderEntry = function (slot) {
