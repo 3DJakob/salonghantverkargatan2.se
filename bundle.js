@@ -302,8 +302,6 @@
         const items = document.querySelector(id + ' div.content');
         if (target && items) {
           target.style.height = items.scrollHeight;
-          console.log(target);
-          console.log(items.scrollHeight);
         }
       } else {
         target.style.height = 0;
@@ -368,21 +366,61 @@
     const target = document.getElementById('resourceScheduleContainer');
     const startDate = activeSchedule;
     const oneWeekForward = addDays(new Date(startDate.getTime()), 6);
+    console.log(serviceSchedule);
+
+    // /** @param {ServiceScheduleslot} slot */
+    const renderEntry = function (slot) {
+      const entryElement = document.createElement('div');
+      const textElement = document.createElement('p');
+      textElement.textContent = slot.time;
+      entryElement.classList.add('slot');
+      entryElement.appendChild(textElement);
+      return entryElement
+    };
+
+    const renderEmpty = function () {
+      const p = document.createElement('p');
+      p.textContent = 'Inga lediga tider';
+      p.style.fontSize = '10px';
+      return p  
+    };
+
+    /** @param {Date} date1 */
+    /** @param {Date} date2 */
+    const compareDates = function (date1, date2) {
+      if (date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate()) {
+        return true
+      }
+      return false
+    };
 
     if (target) {
       target.innerHTML = '';
       for (let i = new Date(startDate.getTime()); i.getTime() <= oneWeekForward.getTime(); i = addDays(i, 1)) {
+        const container = document.createElement('div');
         const column = document.createElement('div');
         const day = document.createElement('div');
         const dayName = document.createElement('h2');
         const dayDate = document.createElement('p');
-        column.classList.add('column');
+        container.classList.add('column');
         dayName.textContent = dayNames[getRealDay(i)];
         dayDate.textContent = i.getDate() + ' ' + monthNames[i.getMonth()];
         day.appendChild(dayName);
         day.appendChild(dayDate);
         column.appendChild(day);
-        target.appendChild(column);
+        container.appendChild(column);
+        let match = false;
+        serviceSchedule.slots.forEach(function (slot) {
+          const slotTime = new Date(slot.date);
+          if (compareDates(slotTime, i)) {
+            match = true;
+            container.appendChild(renderEntry(slot));
+          }
+        });
+        if (!match) {
+          container.appendChild(renderEmpty());
+        }
+        target.appendChild(container);
       }
     }
   }

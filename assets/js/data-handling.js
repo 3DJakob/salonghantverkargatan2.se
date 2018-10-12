@@ -48,7 +48,7 @@ import { weekNumber } from './weeknumber.js'
  */
 
 /**
- * @typedef {Object} slot
+ * @typedef {Object} Slot
  * @property {String} key
  * @property {String} date
  * @property {String} time
