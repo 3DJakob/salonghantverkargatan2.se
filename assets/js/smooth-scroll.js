@@ -8,7 +8,7 @@ function easeInOutQuad (t) {
     : -1 + (4 - 2 * t) * t
 }
 
-function smoothScrollTo (href) {
+export const smoothScrollTo = (href) => {
   var start = window.performance.now()
   var target = document.getElementById(href.substring(1))
 
