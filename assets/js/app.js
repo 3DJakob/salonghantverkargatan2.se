@@ -2,9 +2,6 @@ import { getHairdressers } from '../data/hairDressers.js'
 import { getResourceSettings, getResourceServices, getServiceSchedule, Service, ServiceSchedule } from './data-handling.js'
 import { smoothScrollTo } from './smooth-scroll.js'
 import { weekNumber } from './weeknumber.js'
-// const weeknumber = require('weeknumber')
-// import weeknumber from 'weeknumber'
-// import { weekNumber } from './weeknumber.js'
 
 const monthNames = ['Jan', 'Feb', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec']
 const dayNames = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön']
@@ -222,7 +219,6 @@ function populateScheduleBoxes (serviceSchedule) {
   const target = document.getElementById('resourceScheduleContainer')
   const startDate = activeSchedule
   const oneWeekForward = addDays(new Date(startDate.getTime()), 6)
-  console.log(serviceSchedule)
 
   // /** @param {ServiceScheduleslot} slot */
   const renderEntry = function (slot) {
