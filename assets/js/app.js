@@ -77,6 +77,7 @@ function resourceClick (hairDresser) {
     selectedOptions.hairDresser = hairDresser
   } else {
     animateContainer(false, '#what')
+    animateContainer(false, '#when')
     selectedOptions = { hairDresser: {}, service: {} }
   }
 }
@@ -101,6 +102,7 @@ function animateResourceRing (hairDresser) {
 /** @param {ResourceServices} resourceServices */
 function populateResourceContainer (resourceServices) {
   const container = document.querySelector('#resourceServiceContainer')
+  const startDate = getWeekStartDate(new Date())
   let includesSelectedResource = false
   if (container) {
     container.innerHTML = ''
@@ -117,7 +119,6 @@ function populateResourceContainer (resourceServices) {
       }
       row.addEventListener('click', function () {
         selectedOptions.service = service
-        const startDate = getWeekStartDate(new Date())
         getServiceSchedule(service.serviceId, selectedOptions.hairDresser.key, startDate.getFullYear(), weekNumber(startDate)).then(function (serviceSchedule) {
           populateScheduleContainer(serviceSchedule)
         })
@@ -139,6 +140,11 @@ function populateResourceContainer (resourceServices) {
   }
   if (!includesSelectedResource) {
     selectedOptions.service = {}
+    animateContainer(false, '#when')
+  } else {
+    getServiceSchedule(selectedOptions.service.serviceId, selectedOptions.hairDresser.key, activeSchedule.getFullYear(), weekNumber(activeSchedule)).then(function (serviceSchedule) {
+      populateScheduleContainer(serviceSchedule)
+    })
   }
   animateContainer(true, '#what')
   smoothScrollTo('#what')
