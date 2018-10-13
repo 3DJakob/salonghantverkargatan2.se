@@ -148,8 +148,9 @@
     });
   }
 
-  const monthNames = ['Jan', 'Feb', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
-  const dayNames = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön'];
+  const monthShortNames = ['Jan', 'Feb', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
+  const monthNames = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'];
+  const dayShortNames = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön'];
 
   /** @typedef {import('./data-handling.js').ResourceServices} ResourceServices */
 
@@ -165,7 +166,12 @@
    * @property {String} key
    */
 
-  let selectedOptions = { hairDresser: {}, service: {} };
+  /**
+    * @typedef {Object} selectedOptions
+    * @param {HairDresser} hairDresser
+    * @param {Service} service
+  */
+  let selectedOptions = { hairDresser: {}, service: {}, slot: {} };
 
   /** @type {Date} */
   let activeSchedule = getWeekStartDate(new Date());
@@ -197,7 +203,7 @@
       const lastName = document.createElement('p');
 
       container.addEventListener('click', function () {
-        resourceClick(hairDresser);
+        resourceClick(hairDresser, container);
       });
       container.id = hairDresser.key;
       img.src = 'assets/img/profile/' + hairDresser.img + '.jpg';
@@ -214,28 +220,31 @@
   }
 
   /** @param {Object} hairDresser */
-  function resourceClick (hairDresser) {
-    if (animateResourceRing(hairDresser)) {
+  /** @param {HTMLDivElement} element */
+  function resourceClick (hairDresser, element) {
+    if (highlightSelection(element, 'activeRing')) {
       getResourceServices(hairDresser.key).then(function (resourceServices) {
         populateResourceContainer(resourceServices);
       });
       selectedOptions.hairDresser = hairDresser;
     } else {
       animateContainer(false, '#what');
+      animateContainer(false, '#when');
       selectedOptions = { hairDresser: {}, service: {} };
     }
   }
 
-  /** @param {HairDresser} hairDresser */
-  function animateResourceRing (hairDresser) {
-    const clickedElement = document.getElementById(hairDresser.key);
-    const lastClickedElement = document.querySelector('.selected');
+  /** @param {HTMLDivElement} element */
+  /** @param {string} selector */
+  function highlightSelection (element, selector) {
+    const clickedElement = element;
+    const lastClickedElement = document.querySelector('.' + selector);
     if (clickedElement) {
       if (lastClickedElement) {
-        lastClickedElement.classList.remove('selected');
+        lastClickedElement.classList.remove(selector);
       }
       if (lastClickedElement !== clickedElement) {
-        clickedElement.classList.add('selected');
+        clickedElement.classList.add(selector);
         return true
       } else {
         return false
@@ -246,6 +255,7 @@
   /** @param {ResourceServices} resourceServices */
   function populateResourceContainer (resourceServices) {
     const container = document.querySelector('#resourceServiceContainer');
+    const startDate = getWeekStartDate(new Date());
     let includesSelectedResource = false;
     if (container) {
       container.innerHTML = '';
@@ -262,11 +272,10 @@
         }
         row.addEventListener('click', function () {
           selectedOptions.service = service;
-          const startDate = getWeekStartDate(new Date());
-          getServiceSchedule(service.serviceId, selectedOptions.hairDresser.key, startDate.getFullYear(), weekNumber(startDate)).then(function (serviceSchedule) {
+          getServiceSchedule(service.serviceId, selectedOptions.hairDresser.key, activeSchedule.getFullYear(), weekNumber(activeSchedule)).then(function (serviceSchedule) {
             populateScheduleContainer(serviceSchedule);
           });
-          animateService(service);
+          highlightSelection(row, 'activeResourceOption');
         });
         row.id = String(service.serviceId);
         name.textContent = service.name;
@@ -284,6 +293,11 @@
     }
     if (!includesSelectedResource) {
       selectedOptions.service = {};
+      animateContainer(false, '#when');
+    } else {
+      getServiceSchedule(selectedOptions.service.serviceId, selectedOptions.hairDresser.key, activeSchedule.getFullYear(), weekNumber(activeSchedule)).then(function (serviceSchedule) {
+        populateScheduleContainer(serviceSchedule);
+      });
     }
     animateContainer(true, '#what');
     smoothScrollTo('#what');
@@ -303,21 +317,6 @@
       } else {
         target.style.height = 0;
       }
-    }
-  }
-
-  /** @param {Service} service */
-  function animateService (service) {
-    const previous = /** @type {HTMLElement} */ document.querySelectorAll('.activeResourceOption');
-    if (previous[0]) {
-      previous.forEach(function (item) {
-        item.classList.remove('activeResourceOption');
-      });
-    }
-
-    const next = /** @type {HTMLElement} */ document.getElementById(String(service.serviceId));
-    if (next) {
-      next.classList.add('activeResourceOption');
     }
   }
 
@@ -369,9 +368,13 @@
     const renderEntry = function (slot) {
       const entryElement = document.createElement('div');
       const textElement = document.createElement('p');
-      textElement.textContent = slot.time;
+      textElement.textContent = slot.time.substring(0, 5);
       entryElement.classList.add('slot');
       entryElement.appendChild(textElement);
+      entryElement.addEventListener('click', function () {
+        highlightSelection(entryElement, 'activeSlot');
+        populateSummeryContainer(slot);
+      });
       return entryElement
     };
 
@@ -379,7 +382,7 @@
       const p = document.createElement('p');
       p.textContent = 'Inga lediga tider';
       p.style.fontSize = '10px';
-      return p  
+      return p
     };
 
     /** @param {Date} date1 */
@@ -400,8 +403,8 @@
         const dayName = document.createElement('h2');
         const dayDate = document.createElement('p');
         container.classList.add('column');
-        dayName.textContent = dayNames[getRealDay(i)];
-        dayDate.textContent = i.getDate() + ' ' + monthNames[i.getMonth()];
+        dayName.textContent = dayShortNames[getRealDay(i)];
+        dayDate.textContent = i.getDate() + ' ' + monthShortNames[i.getMonth()];
         day.appendChild(dayName);
         day.appendChild(dayDate);
         column.appendChild(day);
@@ -433,9 +436,26 @@
       const oneWeekForward = addDays(new Date(startDate.getTime()), 6);
 
       weekElement.textContent = 'Vecka ' + weekNumber(startDate);
-      dateElement.textContent = startDate.getDate() + ' ' + monthNames[startDate.getMonth()] + ' - ' + String(oneWeekForward.getDate()) + ' ' + monthNames[oneWeekForward.getMonth()];
+      dateElement.textContent = startDate.getDate() + ' ' + monthShortNames[startDate.getMonth()] + ' - ' + String(oneWeekForward.getDate()) + ' ' + monthShortNames[oneWeekForward.getMonth()];
       scheduleInfobar.appendChild(weekElement);
       scheduleInfobar.appendChild(dateElement);
+    }
+  }
+
+  function populateSummeryContainer (slot) {
+    const target = document.getElementById('summaryTextContainer');
+    if (target) {
+      const title = document.createElement('h3');
+      const p = document.createElement('p');
+      const date = new Date(slot.date);
+      const string = dayShortNames[getRealDay(date)] + 'dag den ' + date.getDate() + ' ' + monthNames[date.getMonth()] + ' ' + date.getFullYear() + ' klockan ' + slot.time.substring(0, 5);
+      target.innerHTML = '';
+      title.textContent = selectedOptions.service.name;
+      p.textContent = string;
+      target.appendChild(title);
+      target.appendChild(p);
+      animateContainer(true, '#summary');
+      smoothScrollTo('#summary');
     }
   }
 

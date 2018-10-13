@@ -3,8 +3,9 @@ import { getResourceSettings, getResourceServices, getServiceSchedule, Service, 
 import { smoothScrollTo } from './smooth-scroll.js'
 import { weekNumber } from './weeknumber.js'
 
-const monthNames = ['Jan', 'Feb', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec']
-const dayNames = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön']
+const monthShortNames = ['Jan', 'Feb', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec']
+const monthNames = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December']
+const dayShortNames = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön']
 
 /** @typedef {import('./data-handling.js').ResourceServices} ResourceServices */
 
@@ -20,7 +21,7 @@ const dayNames = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön']
  * @property {String} key
  */
 
-let selectedOptions = { hairDresser: {}, service: {} }
+let selectedOptions = { hairDresser: {}, service: {}, slot: {} }
 
 /** @type {Date} */
 let activeSchedule = getWeekStartDate(new Date())
@@ -52,7 +53,7 @@ function populateHairdresserContainer () {
     const lastName = document.createElement('p')
 
     container.addEventListener('click', function () {
-      resourceClick(hairDresser)
+      resourceClick(hairDresser, container)
     })
     container.id = hairDresser.key
     img.src = 'assets/img/profile/' + hairDresser.img + '.jpg'
@@ -69,8 +70,9 @@ function populateHairdresserContainer () {
 }
 
 /** @param {Object} hairDresser */
-function resourceClick (hairDresser) {
-  if (animateResourceRing(hairDresser)) {
+/** @param {HTMLDivElement} element */
+function resourceClick (hairDresser, element) {
+  if (highlightSelection(element, 'activeRing')) {
     getResourceServices(hairDresser.key).then(function (resourceServices) {
       populateResourceContainer(resourceServices)
     })
@@ -82,16 +84,17 @@ function resourceClick (hairDresser) {
   }
 }
 
-/** @param {HairDresser} hairDresser */
-function animateResourceRing (hairDresser) {
-  const clickedElement = document.getElementById(hairDresser.key)
-  const lastClickedElement = document.querySelector('.selected')
+/** @param {HTMLDivElement} element */
+/** @param {string} selector */
+function highlightSelection (element, selector) {
+  const clickedElement = element
+  const lastClickedElement = document.querySelector('.' + selector)
   if (clickedElement) {
     if (lastClickedElement) {
-      lastClickedElement.classList.remove('selected')
+      lastClickedElement.classList.remove(selector)
     }
     if (lastClickedElement !== clickedElement) {
-      clickedElement.classList.add('selected')
+      clickedElement.classList.add(selector)
       return true
     } else {
       return false
@@ -122,7 +125,7 @@ function populateResourceContainer (resourceServices) {
         getServiceSchedule(service.serviceId, selectedOptions.hairDresser.key, activeSchedule.getFullYear(), weekNumber(activeSchedule)).then(function (serviceSchedule) {
           populateScheduleContainer(serviceSchedule)
         })
-        animateService(service)
+        highlightSelection(row, 'activeResourceOption')
       })
       row.id = String(service.serviceId)
       name.textContent = service.name
@@ -164,21 +167,6 @@ function animateContainer (state, id) {
     } else {
       target.style.height = 0
     }
-  }
-}
-
-/** @param {Service} service */
-function animateService (service) {
-  const previous = /** @type {HTMLElement} */ document.querySelectorAll('.activeResourceOption')
-  if (previous[0]) {
-    previous.forEach(function (item) {
-      item.classList.remove('activeResourceOption')
-    })
-  }
-
-  const next = /** @type {HTMLElement} */ document.getElementById(String(service.serviceId))
-  if (next) {
-    next.classList.add('activeResourceOption')
   }
 }
 
@@ -230,9 +218,13 @@ function populateScheduleBoxes (serviceSchedule) {
   const renderEntry = function (slot) {
     const entryElement = document.createElement('div')
     const textElement = document.createElement('p')
-    textElement.textContent = slot.time
+    textElement.textContent = slot.time.substring(0, 5)
     entryElement.classList.add('slot')
     entryElement.appendChild(textElement)
+    entryElement.addEventListener('click', function () {
+      highlightSelection(entryElement, 'activeSlot')
+      populateSummeryContainer(slot)
+    })
     return entryElement
   }
 
@@ -240,7 +232,7 @@ function populateScheduleBoxes (serviceSchedule) {
     const p = document.createElement('p')
     p.textContent = 'Inga lediga tider'
     p.style.fontSize = '10px'
-    return p  
+    return p
   }
 
   /** @param {Date} date1 */
@@ -261,8 +253,8 @@ function populateScheduleBoxes (serviceSchedule) {
       const dayName = document.createElement('h2')
       const dayDate = document.createElement('p')
       container.classList.add('column')
-      dayName.textContent = dayNames[getRealDay(i)]
-      dayDate.textContent = i.getDate() + ' ' + monthNames[i.getMonth()]
+      dayName.textContent = dayShortNames[getRealDay(i)]
+      dayDate.textContent = i.getDate() + ' ' + monthShortNames[i.getMonth()]
       day.appendChild(dayName)
       day.appendChild(dayDate)
       column.appendChild(day)
@@ -294,9 +286,26 @@ function populateScheduleDate () {
     const oneWeekForward = addDays(new Date(startDate.getTime()), 6)
 
     weekElement.textContent = 'Vecka ' + weekNumber(startDate)
-    dateElement.textContent = startDate.getDate() + ' ' + monthNames[startDate.getMonth()] + ' - ' + String(oneWeekForward.getDate()) + ' ' + monthNames[oneWeekForward.getMonth()]
+    dateElement.textContent = startDate.getDate() + ' ' + monthShortNames[startDate.getMonth()] + ' - ' + String(oneWeekForward.getDate()) + ' ' + monthShortNames[oneWeekForward.getMonth()]
     scheduleInfobar.appendChild(weekElement)
     scheduleInfobar.appendChild(dateElement)
+  }
+}
+
+function populateSummeryContainer (slot) {
+  const target = document.getElementById('summaryTextContainer')
+  if (target) {
+    const title = document.createElement('h3')
+    const p = document.createElement('p')
+    const date = new Date(slot.date)
+    const string = dayShortNames[getRealDay(date)] + 'dag den ' + date.getDate() + ' ' + monthNames[date.getMonth()] + ' ' + date.getFullYear() + ' klockan ' + slot.time.substring(0, 5)
+    target.innerHTML = ''
+    title.textContent = selectedOptions.service.name
+    p.textContent = string
+    target.appendChild(title)
+    target.appendChild(p)
+    animateContainer(true, '#summary')
+    smoothScrollTo('#summary')
   }
 }
 
