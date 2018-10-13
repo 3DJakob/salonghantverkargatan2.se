@@ -44,11 +44,11 @@ import { weekNumber } from './weeknumber.js'
 
 /**
  * @typedef {Object} ServiceSchedule
- * @property {Slot[]} slots
+ * @property {ServiceScheduleSlot[]} slots
  */
 
 /**
- * @typedef {Object} Slot
+ * @typedef {Object} ServiceScheduleSlot
  * @property {String} key
  * @property {String} date
  * @property {String} time

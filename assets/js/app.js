@@ -1,5 +1,5 @@
 import { getHairdressers } from '../data/hairDressers.js'
-import { getResourceSettings, getResourceServices, getServiceSchedule, Service, ServiceSchedule } from './data-handling.js'
+import { getResourceSettings, getResourceServices, getServiceSchedule, Service, ServiceSchedule, ServiceScheduleSlot } from './data-handling.js'
 import { smoothScrollTo } from './smooth-scroll.js'
 import { weekNumber } from './weeknumber.js'
 
@@ -220,7 +220,7 @@ function populateScheduleBoxes (serviceSchedule) {
   const startDate = activeSchedule
   const oneWeekForward = addDays(new Date(startDate.getTime()), 6)
 
-  // /** @param {ServiceScheduleslot} slot */
+  /** @param {ServiceScheduleSlot} slot */
   const renderEntry = function (slot) {
     const entryElement = document.createElement('div')
     const textElement = document.createElement('p')
@@ -234,7 +234,7 @@ function populateScheduleBoxes (serviceSchedule) {
     const p = document.createElement('p')
     p.textContent = 'Inga lediga tider'
     p.style.fontSize = '10px'
-    return p  
+    return p
   }
 
   /** @param {Date} date1 */
