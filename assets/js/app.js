@@ -119,7 +119,7 @@ function populateResourceContainer (resourceServices) {
       }
       row.addEventListener('click', function () {
         selectedOptions.service = service
-        getServiceSchedule(service.serviceId, selectedOptions.hairDresser.key, startDate.getFullYear(), weekNumber(startDate)).then(function (serviceSchedule) {
+        getServiceSchedule(service.serviceId, selectedOptions.hairDresser.key, activeSchedule.getFullYear(), weekNumber(activeSchedule)).then(function (serviceSchedule) {
           populateScheduleContainer(serviceSchedule)
         })
         animateService(service)
