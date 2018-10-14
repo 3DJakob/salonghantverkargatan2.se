@@ -166,11 +166,6 @@
    * @property {String} key
    */
 
-  /**
-    * @typedef {Object} selectedOptions
-    * @param {HairDresser} hairDresser
-    * @param {Service} service
-  */
   let selectedOptions = { hairDresser: {}, service: {}, slot: {} };
 
   /** @type {Date} */
@@ -363,6 +358,7 @@
     const target = document.getElementById('resourceScheduleContainer');
     const startDate = activeSchedule;
     const oneWeekForward = addDays(new Date(startDate.getTime()), 6);
+    let match = false;
 
     // /** @param {ServiceScheduleslot} slot */
     const renderEntry = function (slot) {
@@ -372,9 +368,16 @@
       entryElement.classList.add('slot');
       entryElement.appendChild(textElement);
       entryElement.addEventListener('click', function () {
+        selectedOptions.slot = slot;
         highlightSelection(entryElement, 'activeSlot');
         populateSummeryContainer(slot);
       });
+      if (slot.time === selectedOptions.slot.time && slot.date === selectedOptions.slot.date) {
+        selectedOptions.slot = slot;
+        populateSummeryContainer(slot);
+        entryElement.classList.add('activeSlot');
+        match = true;
+      }
       return entryElement
     };
 
@@ -421,6 +424,9 @@
           container.appendChild(renderEmpty());
         }
         target.appendChild(container);
+      }
+      if (!match) {
+        animateContainer(false, '#summary');
       }
     }
   }
