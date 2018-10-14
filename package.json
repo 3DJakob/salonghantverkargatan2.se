@@ -11,7 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.3.1",
-    "phone": "^2.2.0",
     "weeknumber": "^1.1.0"
   },
   "devDependencies": {

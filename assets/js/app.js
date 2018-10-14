@@ -320,6 +320,65 @@ function populateSummeryContainer (slot) {
   }
 }
 
+function getNumber (number) {
+  number = number.replace(/\s/g,'');
+  if (number) {
+    if (number.charAt(0) === '4' && number.charAt(1) === '6') {
+      number = '+' + number
+    } else if (number.charAt(0) !== '+') {
+      number = number.substring(1)
+      number = '+46' + number
+    }
+  }
+  return number
+}
+
+function isValid (number) {
+  // +46 accounts to 3 letters number is 7 - 9
+  const isnum = /^\d+$/.test(number.substring(1))
+  if (!isnum) {
+    return false
+  }
+  if (number.length === 10 || number.length === 11 || number.length === 12) {
+    return true
+  } else {
+    return false
+  }
+}
+
+function sendRequest () {
+  const nameElement = document.getElementById('name')
+  const phoneElement = document.getElementById('phone')
+  const noteElement = document.getElementById('message')
+  if (nameElement && phoneElement && noteElement) {
+    const name = nameElement.value
+    const phone = getNumber(phoneElement.value)
+    const note = noteElement.value
+    if (!name) {
+      const reset = function () {
+        nameElement.style.animation = ''
+      }
+      nameElement.style.animation = 'shake 200ms'
+      setTimeout(reset, 200)
+    }
+    if (!isValid(phone)) {
+      const reset = function () {
+        phoneElement.style.animation = ''
+      }
+      phoneElement.style.animation = 'shake 200ms'
+      setTimeout(reset, 200)
+    }
+
+    if (name && isValid(phone)) {
+      const obj = { 'slotKey': selectedOptions.slot.key, name, phone, note, 'reminderTypes': ['SMS'] }
+      console.log(obj)
+    }
+
+
+  }
+}
+
 /* Export public functions */
 window['initiatePage'] = initiatePage
 window['scheduleArrowClick'] = scheduleArrowClick
+window['sendRequest'] = sendRequest

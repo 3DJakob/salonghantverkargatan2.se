@@ -148,6 +148,8 @@
     });
   }
 
+  // import { isValid, getNumber } from './awesome-phonenumber.js'
+
   const monthShortNames = ['Jan', 'Feb', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
   const monthNames = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'];
   const dayShortNames = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön'];
@@ -166,6 +168,11 @@
    * @property {String} key
    */
 
+  /**
+    * @typedef {Object} selectedOptions
+    * @param {HairDresser} hairDresser
+    * @param {Service} service
+  */
   let selectedOptions = { hairDresser: {}, service: {}, slot: {} };
 
   /** @type {Date} */
@@ -465,9 +472,70 @@
     }
   }
 
+  function getNumber (number) {
+    number = number.replace(/\s/g,'');
+    if (number) {
+      if (number.charAt(0) === '4' && number.charAt(1) === '6') {
+        number = '+' + number;
+      } else if (number.charAt(0) !== '+') {
+        number = number.substring(1);
+        number = '+46' + number;
+      }
+    }
+    return number
+  }
+
+  function isValid (number) {
+    // +46 accounts to 3 letters number is 7 - 9
+    const isnum = /^\d+$/.test(number.substring(1));
+    if (!isnum) {
+      return false
+    }
+    if (number.length === 10 || number.length === 11 || number.length === 12) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  function sendRequest () {
+    // {"slotKey":"/SDP4xJBJrRj2NXmZOYmku27wuQhGEfDqX7/sOY6jgN2fiu13xexNhTQAiVi3l07","name":"HEnric",","phone":"+46732961010","note":"","reminderTypes":["SMS"]}
+    const nameElement = document.getElementById('name');
+    const phoneElement = document.getElementById('phone');
+    const noteElement = document.getElementById('message');
+    if (nameElement && phoneElement && noteElement) {
+      const name = nameElement.value;
+      const phone = getNumber(phoneElement.value);
+      const note = noteElement.value;
+      if (!name) {
+        const reset = function () {
+          nameElement.style.animation = '';
+        };
+        nameElement.style.animation = 'shake 200ms';
+        setTimeout(reset, 200);
+      }
+      if (!isValid(phone)) {
+        const reset = function () {
+          phoneElement.style.animation = '';
+        };
+        phoneElement.style.animation = 'shake 200ms';
+        setTimeout(reset, 200);
+      }
+
+      if (name && isValid(phone)) {
+        const obj = { 'slotKey': selectedOptions.slot.key, name, phone, note, 'reminderTypes': ['SMS'] };
+        console.log(obj);
+      }
+
+
+      // https://liveapi04.cliento.com/api/v2/partner/cliento/7DUdvNGJ5LXQK83UlWTJ1O/booking/
+    }
+  }
+
   /* Export public functions */
   window['initiatePage'] = initiatePage;
   window['scheduleArrowClick'] = scheduleArrowClick;
+  window['sendRequest'] = sendRequest;
 
 }());
 //# sourceMappingURL=bundle.js.map

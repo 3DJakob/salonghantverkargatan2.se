@@ -59,11 +59,12 @@
             <div class="inputcontainer">
               <div class="row">
                 <input type="text" placeholder="Namn" id="name" autocomplete="name">
-                <input type="tel" placeholder="Telefon" id="number" autocomplete="tel">
+                <input type="tel" placeholder="Telefon" id="phone" autocomplete="tel">
               </div>
               <input type="email" placeholder="E-post" id="email" autocomplete="email">
               <textarea type="text" placeholder="Meddelande" rows="5" id="message"></textarea>
-              <button>Bekräfta</button>
+              <button onclick="sendRequest()">Bekräfta</button>
+              <p>För att bekräfta bokningen behöver du ange en PIN-kod som vi skickar till dig via SMS.</p>
             </div>
           </div>
         </div>
