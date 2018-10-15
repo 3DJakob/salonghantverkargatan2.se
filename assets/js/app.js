@@ -1,5 +1,5 @@
 import { getHairdressers } from '../data/hairDressers.js'
-import { getResourceSettings, getResourceServices, getServiceSchedule, sendBooking, Service, ServiceSchedule } from './data-handling.js'
+import { getResourceSettings, getResourceServices, getServiceSchedule, sendBooking, Service, ServiceSchedule, ServiceScheduleSlot } from './data-handling.js'
 import { smoothScrollTo } from './smooth-scroll.js'
 import { weekNumber } from './weeknumber.js'
 
@@ -218,7 +218,7 @@ function populateScheduleBoxes (serviceSchedule) {
   const oneWeekForward = addDays(new Date(startDate.getTime()), 6)
   let match = false
 
-  // /** @param {ServiceScheduleslot} slot */
+  /** @param {ServiceScheduleSlot} slot */
   const renderEntry = function (slot) {
     const entryElement = document.createElement('div')
     const textElement = document.createElement('p')
