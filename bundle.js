@@ -80,6 +80,74 @@
   /* global fetch */
 
   /**
+   * @typedef {Object} ResourceSettings
+   * @property {Number} resourceId
+   * @property {String} resourceName
+   * @property {Setting[]} settings
+   */
+
+  /**
+   * @typedef {Object} Setting
+   * @property {String} companyName
+   * @property {String} currencyCode
+   * @property {String} preferredE164CountryCode
+   * @property {String} stableId
+   * @property {Number} webBookingMaxDaysInAdvance
+   * @property {String} webContactNumber
+   * @property {Boolean} webHideNotes
+   * @property {Number} webMinTimeBeforeBooking
+   * @property {Boolean} webRequireEmail
+   * @property {Boolean} webRequireNotes
+   * @property {Boolean} webRequirePno
+   * @property {Boolean} webUseSmsVerification
+   */
+
+  /**
+   * @typedef {Object} ResourceServices
+   * @property {Service[]} services
+   */
+
+  /**
+   * @typedef {Object} Service
+   * @property {String} description
+   * @property {String} group
+   * @property {Number} maxDuration
+   * @property {Number} maxPrice
+   * @property {Number} minDuration
+   * @property {Number} minPrice
+   * @property {String} name
+   * @property {Boolean} priceFrom
+   * @property {Number} serviceId
+   */
+
+  /**
+   * @typedef {Object} ServiceSchedule
+   * @property {Slot[]} slots
+   */
+
+  /**
+   * @typedef {Object} Slot
+   * @property {String} key
+   * @property {String} date
+   * @property {String} time
+   * @property {String} resource
+   * @property {Number} resourceId
+   * @property {Number} price
+   * @property {Boolean} priceFrom
+   */
+
+  /**
+   * @param {String} key
+   * @returns {Promise<ResourceSettings>}
+   */
+  function getResourceSettings (key) {
+    return fetch('https://liveapi04.cliento.com/api/vip/settings/' + key)
+      .then(function (response) {
+        return response.json()
+      })
+  }
+
+  /**
    * @param {String} key
    * @returns {Promise<ResourceServices>}
    */
@@ -98,12 +166,33 @@
    * @returns {Promise<ResourceServices>}
    */
   function getServiceSchedule (serviceId, key, year, week) {
-    // return fetch('https://liveapi04.cliento.com/api/vip/slots/service/' + String(serviceId) + '/resource/' + key + '/' + today.getFullYear() + '-' + weekNumber(today) + week + '/')
     return fetch('https://liveapi04.cliento.com/api/vip/slots/service/' + String(serviceId) + '/resource/' + key + '/' + year + '-' + week + '/')
       .then(function (response) {
         return response.json()
       })
   }
+
+  function sendBooking (data, stableId) {
+    console.log(data);
+    console.log(stableId);
+    const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/';
+    console.log(url);
+    console.log(JSON.stringify(data));
+
+    fetch(url, {
+      method: 'POST', // or 'PUT'
+      body: JSON.stringify(data), // data can be `string` or {object}!
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(response => console.log('Success:', JSON.stringify(response)))
+      .catch(error => console.error('Error:', error));
+  }
+
+  // {"slotKey":"N06WdDg5hZy4BwGUhYm30y1ZG9/MyiQ2Hk7SmUIzXyqlWtOeuZHvNPlXh09y31g7","name":"HEnric","phone":"+46123456789","note":"","reminderTypes":["SMS"]}
+  // {"slotKey":"/SDP4xJBJrRj2NXmZOYmku27wuQhGEfDqX7/sOY6jgN2fiu13xexNhTQAiVi3l07","name":"HEnric",","phone":"+46732961010","note":"","reminderTypes":["SMS"]}
+  // {"slotKey":"N06WdDg5hZy4BwGUhYm30y1ZG9/MyiQ2Hk7SmUIzXyqlWtOeuZHvNPlXh09y31g7","name":"Jakob Unnebäck","email":"","phone":"+46793032599","note":"","reminderTypes":["SMS"]}
 
   var scrollDuration = 512;
 
@@ -170,10 +259,11 @@
 
   /**
     * @typedef {Object} selectedOptions
+    * @type {Object}
     * @param {HairDresser} hairDresser
     * @param {Service} service
-  */
-  let selectedOptions = { hairDresser: {}, service: {}, slot: {} };
+    */
+  let selectedOptions = { hairDresser: {}, options: {}, service: {}, slot: {} };
 
   /** @type {Date} */
   let activeSchedule = getWeekStartDate(new Date());
@@ -227,6 +317,9 @@
     if (highlightSelection(element, 'activeRing')) {
       getResourceServices(hairDresser.key).then(function (resourceServices) {
         populateResourceContainer(resourceServices);
+      });
+      getResourceSettings(hairDresser.key).then(function (resourceSettings) {
+        selectedOptions.options = resourceSettings;
       });
       selectedOptions.hairDresser = hairDresser;
     } else {
@@ -485,7 +578,7 @@
     return number
   }
 
-  function isValid (number) {
+  function isValidPhone (number) {
     // +46 accounts to 3 letters number is 7 - 9
     const isnum = /^\d+$/.test(number.substring(1));
     if (!isnum) {
@@ -498,14 +591,22 @@
     }
   }
 
+  function isValidEmail (email) {
+    if ((email.includes('@') && email.includes('.')) | email === '') {
+      return true
+    }
+    return false
+  }
+
   function sendRequest () {
-    // {"slotKey":"/SDP4xJBJrRj2NXmZOYmku27wuQhGEfDqX7/sOY6jgN2fiu13xexNhTQAiVi3l07","name":"HEnric",","phone":"+46732961010","note":"","reminderTypes":["SMS"]}
     const nameElement = document.getElementById('name');
     const phoneElement = document.getElementById('phone');
+    const emailElement = document.getElementById('email');
     const noteElement = document.getElementById('message');
     if (nameElement && phoneElement && noteElement) {
       const name = nameElement.value;
       const phone = getNumber(phoneElement.value);
+      const email = emailElement.value;
       const note = noteElement.value;
       if (!name) {
         const reset = function () {
@@ -514,21 +615,25 @@
         nameElement.style.animation = 'shake 200ms';
         setTimeout(reset, 200);
       }
-      if (!isValid(phone)) {
+      if (!isValidPhone(phone)) {
         const reset = function () {
           phoneElement.style.animation = '';
         };
         phoneElement.style.animation = 'shake 200ms';
         setTimeout(reset, 200);
       }
-
-      if (name && isValid(phone)) {
-        const obj = { 'slotKey': selectedOptions.slot.key, name, phone, note, 'reminderTypes': ['SMS'] };
-        console.log(obj);
+      if (!isValidEmail(email)) {
+        const reset = function () {
+          emailElement.style.animation = '';
+        };
+        emailElement.style.animation = 'shake 200ms';
+        setTimeout(reset, 200);
       }
 
-
-      // https://liveapi04.cliento.com/api/v2/partner/cliento/7DUdvNGJ5LXQK83UlWTJ1O/booking/
+      if (name && isValidPhone(phone) && isValidEmail(email)) { // valid click!
+        const obj = { 'slotKey': selectedOptions.slot.key, name, email, phone, note, 'reminderTypes': ['SMS'] };
+        sendBooking(obj, selectedOptions.options.settings.stableId);
+      }
     }
   }
 

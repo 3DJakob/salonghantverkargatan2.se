@@ -1,5 +1,5 @@
 import { getHairdressers } from '../data/hairDressers.js'
-import { getResourceSettings, getResourceServices, getServiceSchedule, Service, ServiceSchedule } from './data-handling.js'
+import { getResourceSettings, getResourceServices, getServiceSchedule, sendBooking, Service, ServiceSchedule } from './data-handling.js'
 import { smoothScrollTo } from './smooth-scroll.js'
 import { weekNumber } from './weeknumber.js'
 
@@ -21,7 +21,7 @@ const dayShortNames = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön']
  * @property {String} key
  */
 
-let selectedOptions = { hairDresser: {}, service: {}, slot: {} }
+let selectedOptions = { hairDresser: {}, options: {}, service: {}, slot: {} }
 
 /** @type {Date} */
 let activeSchedule = getWeekStartDate(new Date())
@@ -75,6 +75,9 @@ function resourceClick (hairDresser, element) {
   if (highlightSelection(element, 'activeRing')) {
     getResourceServices(hairDresser.key).then(function (resourceServices) {
       populateResourceContainer(resourceServices)
+    })
+    getResourceSettings(hairDresser.key).then(function (resourceSettings) {
+      selectedOptions.options = resourceSettings
     })
     selectedOptions.hairDresser = hairDresser
   } else {
@@ -333,7 +336,7 @@ function getNumber (number) {
   return number
 }
 
-function isValid (number) {
+function isValidPhone (number) {
   // +46 accounts to 3 letters number is 7 - 9
   const isnum = /^\d+$/.test(number.substring(1))
   if (!isnum) {
@@ -346,13 +349,22 @@ function isValid (number) {
   }
 }
 
+function isValidEmail (email) {
+  if ((email.includes('@') && email.includes('.')) | email === '') {
+    return true
+  }
+  return false
+}
+
 function sendRequest () {
   const nameElement = document.getElementById('name')
   const phoneElement = document.getElementById('phone')
+  const emailElement = document.getElementById('email')
   const noteElement = document.getElementById('message')
   if (nameElement && phoneElement && noteElement) {
     const name = nameElement.value
     const phone = getNumber(phoneElement.value)
+    const email = emailElement.value
     const note = noteElement.value
     if (!name) {
       const reset = function () {
@@ -361,20 +373,25 @@ function sendRequest () {
       nameElement.style.animation = 'shake 200ms'
       setTimeout(reset, 200)
     }
-    if (!isValid(phone)) {
+    if (!isValidPhone(phone)) {
       const reset = function () {
         phoneElement.style.animation = ''
       }
       phoneElement.style.animation = 'shake 200ms'
       setTimeout(reset, 200)
     }
-
-    if (name && isValid(phone)) {
-      const obj = { 'slotKey': selectedOptions.slot.key, name, phone, note, 'reminderTypes': ['SMS'] }
-      console.log(obj)
+    if (!isValidEmail(email)) {
+      const reset = function () {
+        emailElement.style.animation = ''
+      }
+      emailElement.style.animation = 'shake 200ms'
+      setTimeout(reset, 200)
     }
 
-
+    if (name && isValidPhone(phone) && isValidEmail(email)) { // valid click!
+      const obj = { 'slotKey': selectedOptions.slot.key, name, email, phone, note, 'reminderTypes': ['SMS'] }
+      sendBooking(obj, selectedOptions.options.settings.stableId)
+    }
   }
 }
 
