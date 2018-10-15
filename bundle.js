@@ -80,6 +80,74 @@
   /* global fetch */
 
   /**
+   * @typedef {Object} ResourceSettings
+   * @property {Number} resourceId
+   * @property {String} resourceName
+   * @property {Setting[]} settings
+   */
+
+  /**
+   * @typedef {Object} Setting
+   * @property {String} companyName
+   * @property {String} currencyCode
+   * @property {String} preferredE164CountryCode
+   * @property {String} stableId
+   * @property {Number} webBookingMaxDaysInAdvance
+   * @property {String} webContactNumber
+   * @property {Boolean} webHideNotes
+   * @property {Number} webMinTimeBeforeBooking
+   * @property {Boolean} webRequireEmail
+   * @property {Boolean} webRequireNotes
+   * @property {Boolean} webRequirePno
+   * @property {Boolean} webUseSmsVerification
+   */
+
+  /**
+   * @typedef {Object} ResourceServices
+   * @property {Service[]} services
+   */
+
+  /**
+   * @typedef {Object} Service
+   * @property {String} description
+   * @property {String} group
+   * @property {Number} maxDuration
+   * @property {Number} maxPrice
+   * @property {Number} minDuration
+   * @property {Number} minPrice
+   * @property {String} name
+   * @property {Boolean} priceFrom
+   * @property {Number} serviceId
+   */
+
+  /**
+   * @typedef {Object} ServiceSchedule
+   * @property {Slot[]} slots
+   */
+
+  /**
+   * @typedef {Object} Slot
+   * @property {String} key
+   * @property {String} date
+   * @property {String} time
+   * @property {String} resource
+   * @property {Number} resourceId
+   * @property {Number} price
+   * @property {Boolean} priceFrom
+   */
+
+  /**
+   * @param {String} key
+   * @returns {Promise<ResourceSettings>}
+   */
+  function getResourceSettings (key) {
+    return fetch('https://liveapi04.cliento.com/api/vip/settings/' + key)
+      .then(function (response) {
+        return response.json()
+      })
+  }
+
+  /**
    * @param {String} key
    * @returns {Promise<ResourceServices>}
    */
@@ -98,12 +166,33 @@
    * @returns {Promise<ResourceServices>}
    */
   function getServiceSchedule (serviceId, key, year, week) {
-    // return fetch('https://liveapi04.cliento.com/api/vip/slots/service/' + String(serviceId) + '/resource/' + key + '/' + today.getFullYear() + '-' + weekNumber(today) + week + '/')
     return fetch('https://liveapi04.cliento.com/api/vip/slots/service/' + String(serviceId) + '/resource/' + key + '/' + year + '-' + week + '/')
       .then(function (response) {
         return response.json()
       })
   }
+
+  function sendBooking (data, stableId) {
+    console.log(data);
+    console.log(stableId);
+    const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/';
+    console.log(url);
+    console.log(JSON.stringify(data));
+
+    fetch(url, {
+      method: 'POST', // or 'PUT'
+      body: JSON.stringify(data), // data can be `string` or {object}!
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(response => console.log('Success:', JSON.stringify(response)))
+      .catch(error => console.error('Error:', error));
+  }
+
+  // {"slotKey":"N06WdDg5hZy4BwGUhYm30y1ZG9/MyiQ2Hk7SmUIzXyqlWtOeuZHvNPlXh09y31g7","name":"HEnric","phone":"+46123456789","note":"","reminderTypes":["SMS"]}
+  // {"slotKey":"/SDP4xJBJrRj2NXmZOYmku27wuQhGEfDqX7/sOY6jgN2fiu13xexNhTQAiVi3l07","name":"HEnric",","phone":"+46732961010","note":"","reminderTypes":["SMS"]}
+  // {"slotKey":"N06WdDg5hZy4BwGUhYm30y1ZG9/MyiQ2Hk7SmUIzXyqlWtOeuZHvNPlXh09y31g7","name":"Jakob Unnebäck","email":"","phone":"+46793032599","note":"","reminderTypes":["SMS"]}
 
   var scrollDuration = 512;
 
@@ -148,8 +237,11 @@
     });
   }
 
-  const monthNames = ['Jan', 'Feb', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
-  const dayNames = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön'];
+  // import { isValid, getNumber } from './awesome-phonenumber.js'
+
+  const monthShortNames = ['Jan', 'Feb', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
+  const monthNames = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'];
+  const dayShortNames = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön'];
 
   /** @typedef {import('./data-handling.js').ResourceServices} ResourceServices */
 
@@ -165,7 +257,13 @@
    * @property {String} key
    */
 
-  let selectedOptions = { hairDresser: {}, service: {} };
+  /**
+    * @typedef {Object} selectedOptions
+    * @type {Object}
+    * @param {HairDresser} hairDresser
+    * @param {Service} service
+    */
+  let selectedOptions = { hairDresser: {}, options: {}, service: {}, slot: {} };
 
   /** @type {Date} */
   let activeSchedule = getWeekStartDate(new Date());
@@ -197,7 +295,7 @@
       const lastName = document.createElement('p');
 
       container.addEventListener('click', function () {
-        resourceClick(hairDresser);
+        resourceClick(hairDresser, container);
       });
       container.id = hairDresser.key;
       img.src = 'assets/img/profile/' + hairDresser.img + '.jpg';
@@ -214,28 +312,34 @@
   }
 
   /** @param {Object} hairDresser */
-  function resourceClick (hairDresser) {
-    if (animateResourceRing(hairDresser)) {
+  /** @param {HTMLDivElement} element */
+  function resourceClick (hairDresser, element) {
+    if (highlightSelection(element, 'activeRing')) {
       getResourceServices(hairDresser.key).then(function (resourceServices) {
         populateResourceContainer(resourceServices);
+      });
+      getResourceSettings(hairDresser.key).then(function (resourceSettings) {
+        selectedOptions.options = resourceSettings;
       });
       selectedOptions.hairDresser = hairDresser;
     } else {
       animateContainer(false, '#what');
+      animateContainer(false, '#when');
       selectedOptions = { hairDresser: {}, service: {} };
     }
   }
 
-  /** @param {HairDresser} hairDresser */
-  function animateResourceRing (hairDresser) {
-    const clickedElement = document.getElementById(hairDresser.key);
-    const lastClickedElement = document.querySelector('.selected');
+  /** @param {HTMLDivElement} element */
+  /** @param {string} selector */
+  function highlightSelection (element, selector) {
+    const clickedElement = element;
+    const lastClickedElement = document.querySelector('.' + selector);
     if (clickedElement) {
       if (lastClickedElement) {
-        lastClickedElement.classList.remove('selected');
+        lastClickedElement.classList.remove(selector);
       }
       if (lastClickedElement !== clickedElement) {
-        clickedElement.classList.add('selected');
+        clickedElement.classList.add(selector);
         return true
       } else {
         return false
@@ -246,6 +350,7 @@
   /** @param {ResourceServices} resourceServices */
   function populateResourceContainer (resourceServices) {
     const container = document.querySelector('#resourceServiceContainer');
+    const startDate = getWeekStartDate(new Date());
     let includesSelectedResource = false;
     if (container) {
       container.innerHTML = '';
@@ -262,11 +367,10 @@
         }
         row.addEventListener('click', function () {
           selectedOptions.service = service;
-          const startDate = getWeekStartDate(new Date());
-          getServiceSchedule(service.serviceId, selectedOptions.hairDresser.key, startDate.getFullYear(), weekNumber(startDate)).then(function (serviceSchedule) {
+          getServiceSchedule(service.serviceId, selectedOptions.hairDresser.key, activeSchedule.getFullYear(), weekNumber(activeSchedule)).then(function (serviceSchedule) {
             populateScheduleContainer(serviceSchedule);
           });
-          animateService(service);
+          highlightSelection(row, 'activeResourceOption');
         });
         row.id = String(service.serviceId);
         name.textContent = service.name;
@@ -284,6 +388,11 @@
     }
     if (!includesSelectedResource) {
       selectedOptions.service = {};
+      animateContainer(false, '#when');
+    } else {
+      getServiceSchedule(selectedOptions.service.serviceId, selectedOptions.hairDresser.key, activeSchedule.getFullYear(), weekNumber(activeSchedule)).then(function (serviceSchedule) {
+        populateScheduleContainer(serviceSchedule);
+      });
     }
     animateContainer(true, '#what');
     smoothScrollTo('#what');
@@ -303,21 +412,6 @@
       } else {
         target.style.height = 0;
       }
-    }
-  }
-
-  /** @param {Service} service */
-  function animateService (service) {
-    const previous = /** @type {HTMLElement} */ document.querySelectorAll('.activeResourceOption');
-    if (previous[0]) {
-      previous.forEach(function (item) {
-        item.classList.remove('activeResourceOption');
-      });
-    }
-
-    const next = /** @type {HTMLElement} */ document.getElementById(String(service.serviceId));
-    if (next) {
-      next.classList.add('activeResourceOption');
     }
   }
 
@@ -364,14 +458,26 @@
     const target = document.getElementById('resourceScheduleContainer');
     const startDate = activeSchedule;
     const oneWeekForward = addDays(new Date(startDate.getTime()), 6);
+    let match = false;
 
     // /** @param {ServiceScheduleslot} slot */
     const renderEntry = function (slot) {
       const entryElement = document.createElement('div');
       const textElement = document.createElement('p');
-      textElement.textContent = slot.time;
+      textElement.textContent = slot.time.substring(0, 5);
       entryElement.classList.add('slot');
       entryElement.appendChild(textElement);
+      entryElement.addEventListener('click', function () {
+        selectedOptions.slot = slot;
+        highlightSelection(entryElement, 'activeSlot');
+        populateSummeryContainer(slot);
+      });
+      if (slot.time === selectedOptions.slot.time && slot.date === selectedOptions.slot.date) {
+        selectedOptions.slot = slot;
+        populateSummeryContainer(slot);
+        entryElement.classList.add('activeSlot');
+        match = true;
+      }
       return entryElement
     };
 
@@ -379,7 +485,7 @@
       const p = document.createElement('p');
       p.textContent = 'Inga lediga tider';
       p.style.fontSize = '10px';
-      return p  
+      return p
     };
 
     /** @param {Date} date1 */
@@ -400,8 +506,8 @@
         const dayName = document.createElement('h2');
         const dayDate = document.createElement('p');
         container.classList.add('column');
-        dayName.textContent = dayNames[getRealDay(i)];
-        dayDate.textContent = i.getDate() + ' ' + monthNames[i.getMonth()];
+        dayName.textContent = dayShortNames[getRealDay(i)];
+        dayDate.textContent = i.getDate() + ' ' + monthShortNames[i.getMonth()];
         day.appendChild(dayName);
         day.appendChild(dayDate);
         column.appendChild(day);
@@ -419,6 +525,9 @@
         }
         target.appendChild(container);
       }
+      if (!match) {
+        animateContainer(false, '#summary');
+      }
     }
   }
 
@@ -433,15 +542,105 @@
       const oneWeekForward = addDays(new Date(startDate.getTime()), 6);
 
       weekElement.textContent = 'Vecka ' + weekNumber(startDate);
-      dateElement.textContent = startDate.getDate() + ' ' + monthNames[startDate.getMonth()] + ' - ' + String(oneWeekForward.getDate()) + ' ' + monthNames[oneWeekForward.getMonth()];
+      dateElement.textContent = startDate.getDate() + ' ' + monthShortNames[startDate.getMonth()] + ' - ' + String(oneWeekForward.getDate()) + ' ' + monthShortNames[oneWeekForward.getMonth()];
       scheduleInfobar.appendChild(weekElement);
       scheduleInfobar.appendChild(dateElement);
+    }
+  }
+
+  function populateSummeryContainer (slot) {
+    const target = document.getElementById('summaryTextContainer');
+    if (target) {
+      const title = document.createElement('h3');
+      const p = document.createElement('p');
+      const date = new Date(slot.date);
+      const string = dayShortNames[getRealDay(date)] + 'dag den ' + date.getDate() + ' ' + monthNames[date.getMonth()] + ' ' + date.getFullYear() + ' klockan ' + slot.time.substring(0, 5);
+      target.innerHTML = '';
+      title.textContent = selectedOptions.service.name;
+      p.textContent = string;
+      target.appendChild(title);
+      target.appendChild(p);
+      animateContainer(true, '#summary');
+      smoothScrollTo('#summary');
+    }
+  }
+
+  function getNumber (number) {
+    number = number.replace(/\s/g,'');
+    if (number) {
+      if (number.charAt(0) === '4' && number.charAt(1) === '6') {
+        number = '+' + number;
+      } else if (number.charAt(0) !== '+') {
+        number = number.substring(1);
+        number = '+46' + number;
+      }
+    }
+    return number
+  }
+
+  function isValidPhone (number) {
+    // +46 accounts to 3 letters number is 7 - 9
+    const isnum = /^\d+$/.test(number.substring(1));
+    if (!isnum) {
+      return false
+    }
+    if (number.length === 10 || number.length === 11 || number.length === 12) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  function isValidEmail (email) {
+    if ((email.includes('@') && email.includes('.')) | email === '') {
+      return true
+    }
+    return false
+  }
+
+  function sendRequest () {
+    const nameElement = document.getElementById('name');
+    const phoneElement = document.getElementById('phone');
+    const emailElement = document.getElementById('email');
+    const noteElement = document.getElementById('message');
+    if (nameElement && phoneElement && noteElement) {
+      const name = nameElement.value;
+      const phone = getNumber(phoneElement.value);
+      const email = emailElement.value;
+      const note = noteElement.value;
+      if (!name) {
+        const reset = function () {
+          nameElement.style.animation = '';
+        };
+        nameElement.style.animation = 'shake 200ms';
+        setTimeout(reset, 200);
+      }
+      if (!isValidPhone(phone)) {
+        const reset = function () {
+          phoneElement.style.animation = '';
+        };
+        phoneElement.style.animation = 'shake 200ms';
+        setTimeout(reset, 200);
+      }
+      if (!isValidEmail(email)) {
+        const reset = function () {
+          emailElement.style.animation = '';
+        };
+        emailElement.style.animation = 'shake 200ms';
+        setTimeout(reset, 200);
+      }
+
+      if (name && isValidPhone(phone) && isValidEmail(email)) { // valid click!
+        const obj = { 'slotKey': selectedOptions.slot.key, name, email, phone, note, 'reminderTypes': ['SMS'] };
+        sendBooking(obj, selectedOptions.options.settings.stableId);
+      }
     }
   }
 
   /* Export public functions */
   window['initiatePage'] = initiatePage;
   window['scheduleArrowClick'] = scheduleArrowClick;
+  window['sendRequest'] = sendRequest;
 
 }());
 //# sourceMappingURL=bundle.js.map

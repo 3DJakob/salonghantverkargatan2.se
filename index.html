@@ -50,6 +50,24 @@
               </div>
           </div>
         </div>
+        <div id="summary">
+          <div class="content">
+            <h2>Sammanställning</h2>
+            <div id="summaryTextContainer">
+              <!-- render text here -->
+            </div>
+            <div class="inputcontainer">
+              <div class="row">
+                <input type="text" placeholder="Namn" id="name" autocomplete="name">
+                <input type="tel" placeholder="Telefon" id="phone" autocomplete="tel">
+              </div>
+              <input type="email" placeholder="E-post" id="email" autocomplete="email">
+              <textarea type="text" placeholder="Meddelande" rows="5" id="message"></textarea>
+              <button onclick="sendRequest()">Bekräfta</button>
+              <p>För att bekräfta bokningen behöver du ange en PIN-kod som vi skickar till dig via SMS.</p>
+            </div>
+          </div>
+        </div>
         <!-- <div class="">
             <h2>Page 3!</h2>
         </div> -->

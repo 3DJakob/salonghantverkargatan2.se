@@ -88,10 +88,26 @@ export function getResourceServices (key) {
  * @returns {Promise<ResourceServices>}
  */
 export function getServiceSchedule (serviceId, key, year, week) {
-  const today = new Date()
-  // return fetch('https://liveapi04.cliento.com/api/vip/slots/service/' + String(serviceId) + '/resource/' + key + '/' + today.getFullYear() + '-' + weekNumber(today) + week + '/')
   return fetch('https://liveapi04.cliento.com/api/vip/slots/service/' + String(serviceId) + '/resource/' + key + '/' + year + '-' + week + '/')
     .then(function (response) {
       return response.json()
     })
+}
+
+export function sendBooking (data, stableId) {
+  console.log(data)
+  console.log(stableId)
+  const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/'
+  console.log(url)
+  console.log(JSON.stringify(data))
+
+  fetch(url, {
+    method: 'POST', // or 'PUT'
+    body: JSON.stringify(data), // data can be `string` or {object}!
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json())
+    .then(response => console.log('Success:', JSON.stringify(response)))
+    .catch(error => console.error('Error:', error))
 }
