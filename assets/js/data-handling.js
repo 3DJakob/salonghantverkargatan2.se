@@ -1,5 +1,6 @@
 /* global fetch */
 import { weekNumber } from './weeknumber.js'
+// import { showPinInput } from './app.js'
 
 /**
  * @typedef {Object} ResourceSettings
@@ -95,12 +96,7 @@ export function getServiceSchedule (serviceId, key, year, week) {
 }
 
 export function sendBooking (data, stableId) {
-  console.log(data)
-  console.log(stableId)
   const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/'
-  console.log(url)
-  console.log(JSON.stringify(data))
-
   fetch(url, {
     method: 'POST', // or 'PUT'
     body: JSON.stringify(data), // data can be `string` or {object}!
@@ -108,6 +104,41 @@ export function sendBooking (data, stableId) {
       'Content-Type': 'application/json'
     }
   }).then(res => res.json())
-    .then(response => console.log('Success:', JSON.stringify(response)))
+    .then(response => showPinInput(response, stableId))
     .catch(error => console.error('Error:', error))
+  // showPinInput({ test: 'success' }, stableId, data.slotKey)
+}
+
+function isValidPin(pin) {
+  if (pin.length === 4 || !isNaN(pin)) {
+    return true
+  }
+  return false
+}
+
+// export const showPinInput = (res) => {
+function showPinInput (res, stableId) {
+  const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/confirm/'
+  const pin = window.prompt('Skriv in pin från SMS', '')
+  const data = { 'slotKey': res.confirmKey, 'pin': pin }
+  if (isValidPin(pin)) {
+    fetch(url, {
+      method: 'POST', // or 'PUT'
+      body: JSON.stringify(data), // data can be `string` or {object}!
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+      .then(response => console.log('Success:', JSON.stringify(response)))
+      .catch(error => error(error))
+  } else {
+    error()
+  }
+}
+
+function error (error) {
+  if (error) {
+    console.log('Error:', error)
+  }
+  window.alert('Fel pin kod, försök igen.')
 }

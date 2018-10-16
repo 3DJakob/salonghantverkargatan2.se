@@ -78,6 +78,7 @@
   };
 
   /* global fetch */
+  // import { showPinInput } from './app.js'
 
   /**
    * @typedef {Object} ResourceSettings
@@ -122,11 +123,11 @@
 
   /**
    * @typedef {Object} ServiceSchedule
-   * @property {Slot[]} slots
+   * @property {ServiceScheduleSlot[]} slots
    */
 
   /**
-   * @typedef {Object} Slot
+   * @typedef {Object} ServiceScheduleSlot
    * @property {String} key
    * @property {String} date
    * @property {String} time
@@ -173,12 +174,7 @@
   }
 
   function sendBooking (data, stableId) {
-    console.log(data);
-    console.log(stableId);
     const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/';
-    console.log(url);
-    console.log(JSON.stringify(data));
-
     fetch(url, {
       method: 'POST', // or 'PUT'
       body: JSON.stringify(data), // data can be `string` or {object}!
@@ -186,13 +182,44 @@
         'Content-Type': 'application/json'
       }
     }).then(res => res.json())
-      .then(response => console.log('Success:', JSON.stringify(response)))
+      .then(response => showPinInput(response, stableId))
       .catch(error => console.error('Error:', error));
+    // showPinInput({ test: 'success' }, stableId, data.slotKey)
   }
 
-  // {"slotKey":"N06WdDg5hZy4BwGUhYm30y1ZG9/MyiQ2Hk7SmUIzXyqlWtOeuZHvNPlXh09y31g7","name":"HEnric","phone":"+46123456789","note":"","reminderTypes":["SMS"]}
-  // {"slotKey":"/SDP4xJBJrRj2NXmZOYmku27wuQhGEfDqX7/sOY6jgN2fiu13xexNhTQAiVi3l07","name":"HEnric",","phone":"+46732961010","note":"","reminderTypes":["SMS"]}
-  // {"slotKey":"N06WdDg5hZy4BwGUhYm30y1ZG9/MyiQ2Hk7SmUIzXyqlWtOeuZHvNPlXh09y31g7","name":"Jakob Unnebäck","email":"","phone":"+46793032599","note":"","reminderTypes":["SMS"]}
+  function isValidPin(pin) {
+    if (pin.length === 4 || !isNaN(pin)) {
+      return true
+    }
+    return false
+  }
+
+  // export const showPinInput = (res) => {
+  function showPinInput (res, stableId) {
+    const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/confirm/';
+    const pin = window.prompt('Skriv in pin från SMS', '');
+    const data = { 'slotKey': res.confirmKey, 'pin': pin };
+    if (isValidPin(pin)) {
+      fetch(url, {
+        method: 'POST', // or 'PUT'
+        body: JSON.stringify(data), // data can be `string` or {object}!
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json())
+        .then(response => console.log('Success:', JSON.stringify(response)))
+        .catch(error => error(error));
+    } else {
+      error();
+    }
+  }
+
+  function error (error) {
+    if (error) {
+      console.log('Error:', error);
+    }
+    window.alert('Fel pin kod, försök igen.');
+  }
 
   var scrollDuration = 512;
 
@@ -237,8 +264,6 @@
     });
   }
 
-  // import { isValid, getNumber } from './awesome-phonenumber.js'
-
   const monthShortNames = ['Jan', 'Feb', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
   const monthNames = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'];
   const dayShortNames = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön'];
@@ -257,12 +282,6 @@
    * @property {String} key
    */
 
-  /**
-    * @typedef {Object} selectedOptions
-    * @type {Object}
-    * @param {HairDresser} hairDresser
-    * @param {Service} service
-    */
   let selectedOptions = { hairDresser: {}, options: {}, service: {}, slot: {} };
 
   /** @type {Date} */
@@ -460,7 +479,7 @@
     const oneWeekForward = addDays(new Date(startDate.getTime()), 6);
     let match = false;
 
-    // /** @param {ServiceScheduleslot} slot */
+    /** @param {ServiceScheduleSlot} slot */
     const renderEntry = function (slot) {
       const entryElement = document.createElement('div');
       const textElement = document.createElement('p');
