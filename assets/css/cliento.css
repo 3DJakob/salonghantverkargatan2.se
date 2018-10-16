@@ -214,6 +214,8 @@ bookingContainer h2 {
   flex-direction: column;
   width: 90vw;
   max-width: 640px;
+  overflow: hidden;
+  transition: 200ms;
 }
 
 #summary .inputcontainer .row {
