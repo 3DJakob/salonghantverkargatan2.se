@@ -369,7 +369,6 @@
   /** @param {ResourceServices} resourceServices */
   function populateResourceContainer (resourceServices) {
     const container = document.querySelector('#resourceServiceContainer');
-    const startDate = getWeekStartDate(new Date());
     let includesSelectedResource = false;
     if (container) {
       container.innerHTML = '';
@@ -567,6 +566,7 @@
     }
   }
 
+  /** @param {ServiceScheduleSlot} slot */
   function populateSummeryContainer (slot) {
     const target = document.getElementById('summaryTextContainer');
     if (target) {
@@ -584,6 +584,7 @@
     }
   }
 
+  /** @param {string} number */
   function getNumber (number) {
     number = number.replace(/\s/g,'');
     if (number) {
@@ -597,6 +598,7 @@
     return number
   }
 
+  /** @param {string} number */
   function isValidPhone (number) {
     // +46 accounts to 3 letters number is 7 - 9
     const isnum = /^\d+$/.test(number.substring(1));
@@ -610,8 +612,9 @@
     }
   }
 
+  /** @param {string} email */
   function isValidEmail (email) {
-    if ((email.includes('@') && email.includes('.')) | email === '') {
+    if ((email.includes('@') && email.includes('.')) || email === '') {
       return true
     }
     return false
@@ -622,7 +625,7 @@
     const phoneElement = document.getElementById('phone');
     const emailElement = document.getElementById('email');
     const noteElement = document.getElementById('message');
-    if (nameElement && phoneElement && noteElement) {
+    if (nameElement && phoneElement && noteElement && emailElement) {
       const name = nameElement.value;
       const phone = getNumber(phoneElement.value);
       const email = emailElement.value;
