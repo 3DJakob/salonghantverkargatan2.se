@@ -85,7 +85,8 @@ function resourceClick (hairDresser, element) {
   } else {
     animateContainer(false, '#what')
     animateContainer(false, '#when')
-    selectedOptions = { hairDresser: {}, service: {} }
+    animateContainer(false, '#summary')
+    selectedOptions = { hairDresser: {}, options: {}, service: {}, slot: {} }
   }
 }
 
@@ -307,9 +308,6 @@ function populateScheduleDate () {
   }
 }
 
-<<<<<<< HEAD
-/** @param {ServiceScheduleSlot} slot */
-=======
 /** @param {String} date */
 /** @param {String} time */
 function getDateFromSlot (date, time) {
@@ -330,7 +328,6 @@ function readableDate (date) {
   return string
 }
 
->>>>>>> e39a5d4af0a308c62c124e04d32676faec3723ca
 function populateSummeryContainer (slot) {
   const target = document.getElementById('summaryTextContainer')
   if (target) {

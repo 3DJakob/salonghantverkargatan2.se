@@ -352,7 +352,8 @@
     } else {
       animateContainer(false, '#what');
       animateContainer(false, '#when');
-      selectedOptions = { hairDresser: {}, service: {} };
+      animateContainer(false, '#summary');
+      selectedOptions = { hairDresser: {}, options: {}, service: {}, slot: {} };
     }
   }
 
@@ -574,9 +575,6 @@
     }
   }
 
-<<<<<<< HEAD
-  /** @param {ServiceScheduleSlot} slot */
-=======
   /** @param {String} date */
   /** @param {String} time */
   function getDateFromSlot (date, time) {
@@ -597,7 +595,6 @@
     return string
   }
 
->>>>>>> e39a5d4af0a308c62c124e04d32676faec3723ca
   function populateSummeryContainer (slot) {
     const target = document.getElementById('summaryTextContainer');
     if (target) {
