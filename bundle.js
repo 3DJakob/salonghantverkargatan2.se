@@ -721,11 +721,16 @@
     animateContainer(true, '#who');
   }
 
+  function slideshow (goTo) {
+    document.querySelector('#imageContainer').style.transform = 'translateX(' + -25 * (goTo - 1) + '%)';
+  }
+
   /* Export public functions */
   window['initiatePage'] = initiatePage;
   window['scheduleArrowClick'] = scheduleArrowClick;
   window['sendRequest'] = sendRequest;
   window['newBooking'] = newBooking;
+  window['slideshow'] = slideshow;
 
 }());
 //# sourceMappingURL=bundle.js.map
