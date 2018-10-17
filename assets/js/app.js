@@ -1,5 +1,5 @@
 import { getHairdressers } from '../data/hairDressers.js'
-import { getResourceSettings, getResourceServices, getServiceSchedule, sendBooking, Service, ServiceSchedule, ServiceScheduleSlot } from './data-handling.js'
+import { getResourceSettings, getResourceServices, getServiceSchedule, sendBooking, showPinInput, Service, ServiceSchedule, ServiceScheduleSlot } from './data-handling.js'
 import { smoothScrollTo } from './smooth-scroll.js'
 import { weekNumber } from './weeknumber.js'
 
@@ -32,6 +32,7 @@ let activeSchedule = getWeekStartDate(new Date())
 function initiatePage () {
   highlightDayOfTheWeek()
   populateHairdresserContainer()
+  animateContainer(true, '#who')
 }
 
 function getToday () {
@@ -159,6 +160,7 @@ function populateResourceContainer (resourceServices) {
 /** @param {Boolean} state */
 /** @param {String} id */
 function animateContainer (state, id) {
+  console.log('animating')
   const target = /** @type {HTMLElement} */ document.querySelector(id)
 
   if (target) {
@@ -350,7 +352,7 @@ function isValidPhone (number) {
 }
 
 function isValidEmail (email) {
-  if ((email.includes('@') && email.includes('.')) | email === '') {
+  if ((email.includes('@') && email.includes('.')) || email === '') {
     return true
   }
   return false
@@ -389,10 +391,35 @@ function sendRequest () {
     }
 
     if (name && isValidPhone(phone) && isValidEmail(email)) { // valid click!
-      const obj = { 'slotKey': selectedOptions.slot.key, name, email, phone, note, 'reminderTypes': ['SMS'] }
-      sendBooking(obj, selectedOptions.options.settings.stableId)
+      // const obj = { 'slotKey': selectedOptions.slot.key, name, email, phone, note, 'reminderTypes': ['SMS'] }
+      // sendBooking(obj, selectedOptions.options.settings.stableId).then(function (response) {
+      //   console.log(response)
+      //   if (response) {
+      //     showPinInput(response, selectedOptions.options.settings.stableId).then(function (confirmed) {
+      //       if (confirmed) {
+      //         window.alert('It worked!')
+      //         populateConfirmed()
+      //       }
+      //     })
+      //   }
+      // })
+      populateConfirmed()
     }
   }
+}
+
+function retractBookingContainer () {
+  animateContainer(false, '#summary')
+  animateContainer(false, '#when')
+  animateContainer(false, '#what')
+  animateContainer(false, '#who')
+}
+
+function populateConfirmed () {
+  retractBookingContainer()
+  animateContainer(true, '#complete')
+  console.log(selectedOptions)
+  selectedOptions = { hairDresser: {}, options: {}, service: {}, slot: {} }
 }
 
 /* Export public functions */

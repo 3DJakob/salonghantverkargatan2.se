@@ -173,54 +173,6 @@
       })
   }
 
-  function sendBooking (data, stableId) {
-    const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/';
-    fetch(url, {
-      method: 'POST', // or 'PUT'
-      body: JSON.stringify(data), // data can be `string` or {object}!
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => res.json())
-      .then(response => showPinInput(response, stableId))
-      .catch(error => console.error('Error:', error));
-    // showPinInput({ test: 'success' }, stableId, data.slotKey)
-  }
-
-  function isValidPin(pin) {
-    if (pin.length === 4 || !isNaN(pin)) {
-      return true
-    }
-    return false
-  }
-
-  // export const showPinInput = (res) => {
-  function showPinInput (res, stableId) {
-    const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/confirm/';
-    const pin = window.prompt('Skriv in pin från SMS', '');
-    const data = { 'slotKey': res.confirmKey, 'pin': pin };
-    if (isValidPin(pin)) {
-      fetch(url, {
-        method: 'POST', // or 'PUT'
-        body: JSON.stringify(data), // data can be `string` or {object}!
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(res => res.json())
-        .then(response => console.log('Success:', JSON.stringify(response)))
-        .catch(error => error(error));
-    } else {
-      error();
-    }
-  }
-
-  function error (error) {
-    if (error) {
-      console.log('Error:', error);
-    }
-    window.alert('Fel pin kod, försök igen.');
-  }
-
   var scrollDuration = 512;
 
   function easeInOutQuad (t) {
@@ -293,6 +245,7 @@
   function initiatePage () {
     highlightDayOfTheWeek();
     populateHairdresserContainer();
+    animateContainer(true, '#who');
   }
 
   function getToday () {
@@ -420,6 +373,7 @@
   /** @param {Boolean} state */
   /** @param {String} id */
   function animateContainer (state, id) {
+    console.log('animating');
     const target = /** @type {HTMLElement} */ document.querySelector(id);
 
     if (target) {
@@ -611,7 +565,7 @@
   }
 
   function isValidEmail (email) {
-    if ((email.includes('@') && email.includes('.')) | email === '') {
+    if ((email.includes('@') && email.includes('.')) || email === '') {
       return true
     }
     return false
@@ -650,10 +604,35 @@
       }
 
       if (name && isValidPhone(phone) && isValidEmail(email)) { // valid click!
-        const obj = { 'slotKey': selectedOptions.slot.key, name, email, phone, note, 'reminderTypes': ['SMS'] };
-        sendBooking(obj, selectedOptions.options.settings.stableId);
+        // const obj = { 'slotKey': selectedOptions.slot.key, name, email, phone, note, 'reminderTypes': ['SMS'] }
+        // sendBooking(obj, selectedOptions.options.settings.stableId).then(function (response) {
+        //   console.log(response)
+        //   if (response) {
+        //     showPinInput(response, selectedOptions.options.settings.stableId).then(function (confirmed) {
+        //       if (confirmed) {
+        //         window.alert('It worked!')
+        //         populateConfirmed()
+        //       }
+        //     })
+        //   }
+        // })
+        populateConfirmed();
       }
     }
+  }
+
+  function retractBookingContainer () {
+    animateContainer(false, '#summary');
+    animateContainer(false, '#when');
+    animateContainer(false, '#what');
+    animateContainer(false, '#who');
+  }
+
+  function populateConfirmed () {
+    retractBookingContainer();
+    animateContainer(true, '#complete');
+    console.log(selectedOptions);
+    selectedOptions = { hairDresser: {}, options: {}, service: {}, slot: {} };
   }
 
   /* Export public functions */

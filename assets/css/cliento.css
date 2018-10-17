@@ -80,6 +80,11 @@ bookingContainer h2 {
   margin: 0;
 }
 
+/* Who */
+#who {
+  transition: 200ms;
+  overflow: hidden;
+}
 
 /* What? */
 #what {
@@ -226,4 +231,10 @@ bookingContainer h2 {
   display: flex;
   flex: 1;
   min-width: 0;
+}
+
+#complete {
+  height: 0;
+  transition: 200ms;
+  overflow: hidden;
 }
