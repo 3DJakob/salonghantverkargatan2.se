@@ -9,6 +9,7 @@ h1, h2, h3, p, a, input, button {
 
 a {
   color: #fff;
+  cursor: pointer;
 }
 
 .button {

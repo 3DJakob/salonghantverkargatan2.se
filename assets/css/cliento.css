@@ -64,7 +64,7 @@ bookingContainer h2 {
   padding: 10px;
   border: 1px solid #333;
   z-index: -1;
-  transform: scale(0.8);
+  transform: scale(0);
 }
 
 #hairdresserContainer div.activeRing .ring {
@@ -80,6 +80,11 @@ bookingContainer h2 {
   margin: 0;
 }
 
+/* Who */
+#who {
+  transition: 512ms;
+  overflow: hidden;
+}
 
 /* What? */
 #what {
@@ -87,7 +92,7 @@ bookingContainer h2 {
   overflow: hidden;
   max-width: 960px;
   width: 100vw;
-  transition: 200ms height;
+  transition: 512ms height;
 }
 
 #resourceServiceContainer {
@@ -134,7 +139,7 @@ bookingContainer h2 {
 /* When? */
 #when {
   height: 0;
-  transition: 200ms;
+  transition: 512ms;
   overflow: hidden;
 }
 
@@ -205,7 +210,7 @@ bookingContainer h2 {
 /* summary */
 #summary {
   height: 0;
-  transition: 200ms;
+  transition: 512ms;
   overflow: hidden;
 }
 
@@ -215,7 +220,7 @@ bookingContainer h2 {
   width: 90vw;
   max-width: 640px;
   overflow: hidden;
-  transition: 200ms;
+  transition: 512ms;
 }
 
 #summary .inputcontainer .row {
@@ -226,4 +231,26 @@ bookingContainer h2 {
   display: flex;
   flex: 1;
   min-width: 0;
+}
+
+#complete {
+  height: 0;
+  transition: 512ms;
+  overflow: hidden;
+}
+
+#complete div.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#complete div.content a {
+  border-color: #333;
+  color: #333;
+}
+
+#complete div.content a:hover {
+  background-color: #333;
+  color: #fff;
 }

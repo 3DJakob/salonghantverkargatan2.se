@@ -1,5 +1,5 @@
 import { getHairdressers } from '../data/hairDressers.js'
-import { getResourceSettings, getResourceServices, getServiceSchedule, sendBooking, Service, ServiceSchedule, ServiceScheduleSlot } from './data-handling.js'
+import { getResourceSettings, getResourceServices, getServiceSchedule, sendBooking, showPinInput, Service, ServiceSchedule, ServiceScheduleSlot } from './data-handling.js'
 import { smoothScrollTo } from './smooth-scroll.js'
 import { weekNumber } from './weeknumber.js'
 
@@ -32,6 +32,7 @@ let activeSchedule = getWeekStartDate(new Date())
 function initiatePage () {
   highlightDayOfTheWeek()
   populateHairdresserContainer()
+  animateContainer(true, '#who')
 }
 
 function getToday () {
@@ -45,6 +46,7 @@ function highlightDayOfTheWeek () {
 
 function populateHairdresserContainer () {
   const hairdresserContainer = document.querySelector('#hairdresserContainer')
+  if (hairdresserContainer) { hairdresserContainer.innerHTML = '' }
   getHairdressers().forEach(hairDresser => {
     const container = document.createElement('div')
     const img = document.createElement('img')
@@ -306,13 +308,33 @@ function populateScheduleDate () {
   }
 }
 
+/** @param {String} date */
+/** @param {String} time */
+function getDateFromSlot (date, time) {
+  const dateObj = new Date(date + 'T' + time)
+  dateObj.setMinutes(dateObj.getMinutes() + dateObj.getTimezoneOffset())
+  return dateObj
+}
+
+/** @param {Date} date */
+function readableDate (date) {
+  let day
+  if (dayShortNames[getRealDay(date)] === 'Tor') {
+    day = 'Tors'
+  } else {
+    day = dayShortNames[getRealDay(date)]
+  }
+  const string = day + 'dag den ' + date.getDate() + ' ' + monthNames[date.getMonth()] + ' ' + date.getFullYear() + ' klockan ' + date.getHours() + ':' + ('0' + String(date.getMinutes())).slice(-2)
+  return string
+}
+
 function populateSummeryContainer (slot) {
   const target = document.getElementById('summaryTextContainer')
   if (target) {
     const title = document.createElement('h3')
     const p = document.createElement('p')
-    const date = new Date(slot.date)
-    const string = dayShortNames[getRealDay(date)] + 'dag den ' + date.getDate() + ' ' + monthNames[date.getMonth()] + ' ' + date.getFullYear() + ' klockan ' + slot.time.substring(0, 5)
+    const date = getDateFromSlot(slot.date, slot.time)
+    const string = readableDate(date)
     target.innerHTML = ''
     title.textContent = selectedOptions.service.name
     p.textContent = string
@@ -350,7 +372,7 @@ function isValidPhone (number) {
 }
 
 function isValidEmail (email) {
-  if ((email.includes('@') && email.includes('.')) | email === '') {
+  if ((email.includes('@') && email.includes('.')) || email === '') {
     return true
   }
   return false
@@ -390,12 +412,47 @@ function sendRequest () {
 
     if (name && isValidPhone(phone) && isValidEmail(email)) { // valid click!
       const obj = { 'slotKey': selectedOptions.slot.key, name, email, phone, note, 'reminderTypes': ['SMS'] }
-      sendBooking(obj, selectedOptions.options.settings.stableId)
+      sendBooking(obj, selectedOptions.options.settings.stableId).then(function (response) {
+        if (response) {
+          showPinInput(response, selectedOptions.options.settings.stableId).then(function (confirmed) {
+            if (confirmed) {
+              populateConfirmed()
+            }
+          })
+        }
+      })
     }
   }
+}
+
+function retractBookingContainer () {
+  animateContainer(false, '#summary')
+  animateContainer(false, '#when')
+  animateContainer(false, '#what')
+  animateContainer(false, '#who')
+}
+
+function populateConfirmed () {
+  const bookingDate = getDateFromSlot(selectedOptions.slot.date, selectedOptions.slot.time)
+  const bookingString = readableDate(bookingDate)
+  const textElement = document.querySelector('#confirmDate')
+  if (textElement) {
+    textElement.textContent = selectedOptions.service.name + ' ' + bookingString
+  }
+  selectedOptions = { hairDresser: {}, options: {}, service: {}, slot: {} }
+  populateHairdresserContainer()
+  animateContainer(true, '#complete')
+  smoothScrollTo('#page2')
+  setTimeout(function () { retractBookingContainer() }, 512)
+}
+
+function newBooking () {
+  animateContainer(false, '#complete')
+  animateContainer(true, '#who')
 }
 
 /* Export public functions */
 window['initiatePage'] = initiatePage
 window['scheduleArrowClick'] = scheduleArrowClick
 window['sendRequest'] = sendRequest
+window['newBooking'] = newBooking

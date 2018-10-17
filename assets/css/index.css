@@ -6,6 +6,10 @@
   color: #fff;
 }
 
+#page1 a {
+  font-size: 20px;
+}
+
 #page1 .button:hover + a {
   animation: jump 1s infinite;
 }
