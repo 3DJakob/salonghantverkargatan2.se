@@ -121,6 +121,12 @@ bookingContainer h2 {
   padding: 0 20px;
   display: flex;
   align-items: center;
+  text-align: left;
+}
+
+#resourceServiceContainer div p:nth-of-type(2) {
+  min-width: 66px;
+  padding-right: 0;
 }
 
 #resourceServiceContainer div p:last-of-type {

@@ -2,8 +2,13 @@ body {
   margin: 0;
 }
 
+h1, h2, h3 {
+  font-family: 'Oswald', sans-serif;
+
+}
+
 h1, h2, h3, p, a, input, button {
-  font-family: 'Raleway', sans-serif;
+  font-family: sans-serif;
   text-align: center;
 }
 
@@ -13,7 +18,9 @@ a {
 }
 
 .button {
-  color: #fff;
+  /* color: #fff; */
+  background-color:rgba(255, 255, 255, 0.7);
+  color: #212130;
   border: 1px solid #fff;
   border-radius: 3px;
   padding: 8px;
@@ -23,8 +30,10 @@ a {
 }
 
 .button:hover {
-  background-color: #fff;
-  color: #000;
+  /* background-color: #fff; */
+  background-color:rgba(255, 255, 255, 1);
+  /* color: #fff; */
+  /* border-color: #212130; */
 }
 
 button {
@@ -121,6 +130,9 @@ header a:hover {
 
 .today {
   font-weight: bold;
+  background-color: #333;
+  color: #fff;
+  padding: 3px;
 }
 
 @keyframes shake {
