@@ -174,44 +174,29 @@
   }
 
   function sendBooking (data, stableId) {
-    const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/';
-    fetch(url, {
-      method: 'POST', // or 'PUT'
-      body: JSON.stringify(data), // data can be `string` or {object}!
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => res.json())
-      .then(response => showPinInput(response, stableId))
-      .catch(error => console.error('Error:', error));
-    // showPinInput({ test: 'success' }, stableId, data.slotKey)
-  }
-
-  function isValidPin(pin) {
-    if (pin.length === 4 || !isNaN(pin)) {
-      return true
-    }
-    return false
-  }
-
-  // export const showPinInput = (res) => {
-  function showPinInput (res, stableId) {
-    const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/confirm/';
-    const pin = window.prompt('Skriv in pin från SMS', '');
-    const data = { 'slotKey': res.confirmKey, 'pin': pin };
-    if (isValidPin(pin)) {
+    return new Promise(function (resolve, reject) {
+      const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/';
       fetch(url, {
-        method: 'POST', // or 'PUT'
-        body: JSON.stringify(data), // data can be `string` or {object}!
+        method: 'POST',
+        body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json'
         }
       }).then(res => res.json())
-        .then(response => console.log('Success:', JSON.stringify(response)))
-        .catch(error => error(error));
-    } else {
-      error();
+        .then(response => resolve(response))
+        .catch(error => console.error('Error:', error));
+    })
+  }
+
+  /**
+   * @param {String} pin
+   * @returns {boolean}
+   */
+  function isValidPin (pin) {
+    if (pin.length === 4 || !isNaN(pin)) {
+      return true
     }
+    return false
   }
 
   function error (error) {
@@ -219,6 +204,27 @@
       console.log('Error:', error);
     }
     window.alert('Fel pin kod, försök igen.');
+  }
+
+  function showPinInput (res, stableId) {
+    return new Promise(function (resolve, reject) {
+      const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/confirm/';
+      const pin = window.prompt('Skriv in pin från SMS', '');
+      const data = { 'slotKey': res.confirmKey, 'pin': pin };
+      if (isValidPin(pin)) {
+        fetch(url, {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(res => res.json())
+          .then(response => resolve(true))
+          .catch(error => error(error));
+      } else {
+        error();
+      }
+    })
   }
 
   var scrollDuration = 512;
@@ -293,6 +299,7 @@
   function initiatePage () {
     highlightDayOfTheWeek();
     populateHairdresserContainer();
+    animateContainer(true, '#who');
   }
 
   function getToday () {
@@ -306,6 +313,7 @@
 
   function populateHairdresserContainer () {
     const hairdresserContainer = document.querySelector('#hairdresserContainer');
+    if (hairdresserContainer) { hairdresserContainer.innerHTML = ''; }
     getHairdressers().forEach(hairDresser => {
       const container = document.createElement('div');
       const img = document.createElement('img');
@@ -566,14 +574,37 @@
     }
   }
 
+<<<<<<< HEAD
   /** @param {ServiceScheduleSlot} slot */
+=======
+  /** @param {String} date */
+  /** @param {String} time */
+  function getDateFromSlot (date, time) {
+    const dateObj = new Date(date + 'T' + time);
+    dateObj.setMinutes(dateObj.getMinutes() + dateObj.getTimezoneOffset());
+    return dateObj
+  }
+
+  /** @param {Date} date */
+  function readableDate (date) {
+    let day;
+    if (dayShortNames[getRealDay(date)] === 'Tor') {
+      day = 'Tors';
+    } else {
+      day = dayShortNames[getRealDay(date)];
+    }
+    const string = day + 'dag den ' + date.getDate() + ' ' + monthNames[date.getMonth()] + ' ' + date.getFullYear() + ' klockan ' + date.getHours() + ':' + ('0' + String(date.getMinutes())).slice(-2);
+    return string
+  }
+
+>>>>>>> e39a5d4af0a308c62c124e04d32676faec3723ca
   function populateSummeryContainer (slot) {
     const target = document.getElementById('summaryTextContainer');
     if (target) {
       const title = document.createElement('h3');
       const p = document.createElement('p');
-      const date = new Date(slot.date);
-      const string = dayShortNames[getRealDay(date)] + 'dag den ' + date.getDate() + ' ' + monthNames[date.getMonth()] + ' ' + date.getFullYear() + ' klockan ' + slot.time.substring(0, 5);
+      const date = getDateFromSlot(slot.date, slot.time);
+      const string = readableDate(date);
       target.innerHTML = '';
       title.textContent = selectedOptions.service.name;
       p.textContent = string;
@@ -654,15 +685,50 @@
 
       if (name && isValidPhone(phone) && isValidEmail(email)) { // valid click!
         const obj = { 'slotKey': selectedOptions.slot.key, name, email, phone, note, 'reminderTypes': ['SMS'] };
-        sendBooking(obj, selectedOptions.options.settings.stableId);
+        sendBooking(obj, selectedOptions.options.settings.stableId).then(function (response) {
+          if (response) {
+            showPinInput(response, selectedOptions.options.settings.stableId).then(function (confirmed) {
+              if (confirmed) {
+                populateConfirmed();
+              }
+            });
+          }
+        });
       }
     }
+  }
+
+  function retractBookingContainer () {
+    animateContainer(false, '#summary');
+    animateContainer(false, '#when');
+    animateContainer(false, '#what');
+    animateContainer(false, '#who');
+  }
+
+  function populateConfirmed () {
+    const bookingDate = getDateFromSlot(selectedOptions.slot.date, selectedOptions.slot.time);
+    const bookingString = readableDate(bookingDate);
+    const textElement = document.querySelector('#confirmDate');
+    if (textElement) {
+      textElement.textContent = selectedOptions.service.name + ' ' + bookingString;
+    }
+    selectedOptions = { hairDresser: {}, options: {}, service: {}, slot: {} };
+    populateHairdresserContainer();
+    animateContainer(true, '#complete');
+    smoothScrollTo('#page2');
+    setTimeout(function () { retractBookingContainer(); }, 512);
+  }
+
+  function newBooking () {
+    animateContainer(false, '#complete');
+    animateContainer(true, '#who');
   }
 
   /* Export public functions */
   window['initiatePage'] = initiatePage;
   window['scheduleArrowClick'] = scheduleArrowClick;
   window['sendRequest'] = sendRequest;
+  window['newBooking'] = newBooking;
 
 }());
 //# sourceMappingURL=bundle.js.map
