@@ -1,9 +1,14 @@
+@media (hover: none) {
+  a:hover { color: inherit; }
+}
+
 @media only screen and (max-width: 600px) {
   #hairdresserContainer div {
     width: 100px;
   }
   #hairdresserContainer div img {
     width: 100px;
+    height: 100px;
   }
   #hairdresserContainer div .ring {
     width: 100px;
