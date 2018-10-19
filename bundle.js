@@ -28,11 +28,11 @@
         'lastname': 'Nettelmark',
         'img': 'josefina',
         'key': '3M44DQ'
-      }, {
-        'name': '',
-        'lastname': 'Snabbast möjliga tid',
-        'img': 'dog',
-        'key': ''
+      // }, {
+      //   'name': '',
+      //   'lastname': 'Snabbast möjliga tid',
+      //   'img': 'dog',
+      //   'key': ''
       }
     ];
     return data
