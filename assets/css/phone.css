@@ -12,6 +12,14 @@
   #hairdresserContainer div.activeRing .ring {
     transform: scale(0.9);
   }
+
+  #page3 {
+    height: 200px;
+  }
+
+  #page3 #imageContainer div {
+    height: 200px;
+  }
 }
 
 @media only screen and (max-width: 320px) {
