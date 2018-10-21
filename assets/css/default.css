@@ -4,7 +4,6 @@ body {
 
 h1, h2, h3 {
   font-family: 'Oswald', sans-serif;
-
 }
 
 h1, h2, h3, p, a, input, button {
@@ -30,10 +29,7 @@ a {
 }
 
 .button:hover {
-  /* background-color: #fff; */
   background-color:rgba(255, 255, 255, 1);
-  /* color: #fff; */
-  /* border-color: #212130; */
 }
 
 button {
@@ -74,6 +70,7 @@ header a {
   display: flex;
   align-items: center;
   text-decoration: none;
+  font-size: 16px !important;
 }
 
 header a:hover {
@@ -113,8 +110,7 @@ header a:hover {
 }
 
 .insert p {
-  padding: 30px;
-  padding-top: 0;
+  margin-top: 0;
 }
 
 .listItem {
@@ -133,6 +129,11 @@ header a:hover {
   background-color: #333;
   color: #fff;
   padding: 3px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
 }
 
 @keyframes shake {

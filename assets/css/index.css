@@ -105,4 +105,37 @@
 
 #page4 {
   min-height: auto;
+  padding: 0;
+}
+
+#page4 .row {
+  width: 100vw;
+}
+
+#map {
+  width: 100%;
+  height: 400px;
+  
+}
+
+#OpeningHours {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  margin: 30px;
+}
+
+#OpeningHours p {
+  margin: 1em;
+}
+
+@media only screen and (min-width: 1200px) {
+  #OpeningHours {
+    flex-direction: row;
+  }
+  #page4 .row {
+    flex-direction: column;
+  }
 }

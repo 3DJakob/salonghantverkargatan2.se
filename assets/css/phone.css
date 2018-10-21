@@ -25,6 +25,10 @@
   #page3 #imageContainer div {
     height: 200px;
   }
+
+  .row {
+    flex-direction: column;
+  }
 }
 
 @media only screen and (max-width: 320px) {
