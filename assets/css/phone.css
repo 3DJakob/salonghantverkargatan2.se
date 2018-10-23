@@ -25,6 +25,25 @@
   #page3 #imageContainer div {
     height: 200px;
   }
+
+  .row {
+    flex-direction: column;
+  }
+
+  .splitScreen {
+    flex-direction: column;
+  }
+
+  .splitScreen#pur {
+    flex-direction: column-reverse;
+  }
+
+  .splitScreen * {
+    width: 100vw;
+  }
+  .splitScreen .img {
+    height: 200px;
+  }
 }
 
 @media only screen and (max-width: 320px) {

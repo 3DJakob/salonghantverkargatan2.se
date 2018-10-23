@@ -105,4 +105,82 @@
 
 #page4 {
   min-height: auto;
+  padding: 0;
+}
+
+#page4 .row {
+  width: 100vw;
+}
+
+#map {
+  width: 100%;
+  height: 400px;
+}
+
+#OpeningHours {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  margin: 30px;
+}
+
+#OpeningHours p {
+  margin: 1em;
+}
+
+@media only screen and (min-width: 1200px) {
+  #OpeningHours {
+    flex-direction: row;
+  }
+  #page4 .row {
+    flex-direction: column;
+  }
+}
+
+.splitScreen {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  max-width: 1440px;
+  min-height: 400px;
+}
+
+.splitScreen * {
+  width: 50%;
+}
+
+.splitScreen .content {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.splitScreen .content * {
+  width: 90%;
+}
+
+.splitScreen .content img {
+  max-width: calc(100vw - 40px);
+  width: 200px;
+}
+
+.splitScreen .img {
+  background-size: cover;
+  background-position: center;
+}
+
+.splitScreen#davines .img {
+  background-image: url(../img/davines1.jpg);
+}
+
+.splitScreen#pur .img {
+  background-image: url(../img/pur3.jpg);
+}
+
+.splitScreen#hairtalk .img {
+  background-image: url(../img/hairtalk1.jpg);
 }

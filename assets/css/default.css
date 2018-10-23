@@ -1,13 +1,15 @@
 body {
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 h1, h2, h3 {
   font-family: 'Oswald', sans-serif;
-
 }
 
-h1, h2, h3, p, a, input, button {
+h1, h2, h3, p, a, input, button, footer {
   font-family: sans-serif;
   text-align: center;
 }
@@ -30,10 +32,7 @@ a {
 }
 
 .button:hover {
-  /* background-color: #fff; */
   background-color:rgba(255, 255, 255, 1);
-  /* color: #fff; */
-  /* border-color: #212130; */
 }
 
 button {
@@ -74,6 +73,7 @@ header a {
   display: flex;
   align-items: center;
   text-decoration: none;
+  font-size: 16px !important;
 }
 
 header a:hover {
@@ -113,8 +113,7 @@ header a:hover {
 }
 
 .insert p {
-  padding: 30px;
-  padding-top: 0;
+  margin-top: 0;
 }
 
 .listItem {
@@ -133,6 +132,21 @@ header a:hover {
   background-color: #333;
   color: #fff;
   padding: 3px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+footer {
+  color: #666;
+  font-size: 12px;
+  padding: 10px 20px;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @keyframes shake {
