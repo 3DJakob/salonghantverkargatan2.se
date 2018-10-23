@@ -110,6 +110,7 @@ header a:hover {
 
 .insert * {
   max-width: 900px;
+  padding: 0 10px;
 }
 
 .insert p {
