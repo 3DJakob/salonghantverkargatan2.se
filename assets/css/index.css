@@ -115,7 +115,6 @@
 #map {
   width: 100%;
   height: 400px;
-  
 }
 
 #OpeningHours {
@@ -138,4 +137,50 @@
   #page4 .row {
     flex-direction: column;
   }
+}
+
+.splitScreen {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  max-width: 1440px;
+  min-height: 400px;
+}
+
+.splitScreen * {
+  width: 50%;
+}
+
+.splitScreen .content {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.splitScreen .content * {
+  width: 90%;
+}
+
+.splitScreen .content img {
+  max-width: calc(100vw - 40px);
+  width: 200px;
+}
+
+.splitScreen .img {
+  background-size: cover;
+  background-position: center;
+}
+
+.splitScreen#davines .img {
+  background-image: url(../img/davines1.jpg);
+}
+
+.splitScreen#pur .img {
+  background-image: url(../img/pur3.jpg);
+}
+
+.splitScreen#hairtalk .img {
+  background-image: url(../img/hairtalk1.jpg);
 }
