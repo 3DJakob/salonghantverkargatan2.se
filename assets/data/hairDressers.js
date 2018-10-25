@@ -29,7 +29,7 @@ export function getHairdressers () {
       'name': '',
       'lastname': 'Snabbast möjliga tid',
       'img': 'dog',
-      'key': ''
+      'key': 'ALL'
     }
   ]
   return data

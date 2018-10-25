@@ -79,9 +79,11 @@ function resourceClick (hairDresser, element) {
     getResourceServices(hairDresser.key).then(function (resourceServices) {
       populateResourceContainer(resourceServices)
     })
-    getResourceSettings(hairDresser.key).then(function (resourceSettings) {
-      selectedOptions.options = resourceSettings
-    })
+    if (hairDresser.key !== 'ALL') {
+      getResourceSettings(hairDresser.key).then(function (resourceSettings) {
+        selectedOptions.options = resourceSettings
+      })
+    }
     selectedOptions.hairDresser = hairDresser
   } else {
     animateContainer(false, '#what')
@@ -337,7 +339,7 @@ function populateSummeryContainer (slot) {
     const date = getDateFromSlot(slot.date, slot.time)
     const string = readableDate(date)
     target.innerHTML = ''
-    title.textContent = selectedOptions.service.name
+    title.textContent = selectedOptions.service.name + ' med ' + slot.resource
     p.textContent = string
     target.appendChild(title)
     target.appendChild(p)

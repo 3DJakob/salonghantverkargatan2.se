@@ -75,7 +75,8 @@ export function getResourceSettings (key) {
  * @returns {Promise<ResourceServices>}
  */
 export function getResourceServices (key) {
-  return fetch('https://liveapi04.cliento.com/api/vip/services/' + key)
+  const url = key === 'ALL' ? 'https://liveapi04.cliento.com/api/v2/partner/cliento/5twAGxhwQrBx6wXjjJeh3j/services/' : 'https://liveapi04.cliento.com/api/vip/services/' + key
+  return fetch(url)
     .then(function (response) {
       return response.json()
     })
@@ -89,7 +90,9 @@ export function getResourceServices (key) {
  * @returns {Promise<ResourceServices>}
  */
 export function getServiceSchedule (serviceId, key, year, week) {
-  return fetch('https://liveapi04.cliento.com/api/vip/slots/service/' + String(serviceId) + '/resource/' + key + '/' + year + '-' + week + '/')
+  const date = year + '-' + week
+  const url = key === 'ALL' ? 'https://liveapi04.cliento.com/api/v2/partner/cliento/5twAGxhwQrBx6wXjjJeh3j/slots/service/' + String(serviceId) + '/resource/ALL/' + date : 'https://liveapi04.cliento.com/api/vip/slots/service/' + String(serviceId) + '/resource/' + key + '/' + date
+  return fetch(url)
     .then(function (response) {
       return response.json()
     })
