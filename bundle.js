@@ -28,11 +28,11 @@
         'lastname': 'Nettelmark',
         'img': 'josefina',
         'key': '3M44DQ'
-      // }, {
-      //   'name': '',
-      //   'lastname': 'Snabbast möjliga tid',
-      //   'img': 'dog',
-      //   'key': ''
+      }, {
+        'name': '',
+        'lastname': 'Snabbast möjliga tid',
+        'img': 'dog',
+        'key': 'ALL'
       }
     ];
     return data
@@ -153,7 +153,8 @@
    * @returns {Promise<ResourceServices>}
    */
   function getResourceServices (key) {
-    return fetch('https://liveapi04.cliento.com/api/vip/services/' + key)
+    const url = key === 'ALL' ? 'https://liveapi04.cliento.com/api/v2/partner/cliento/5twAGxhwQrBx6wXjjJeh3j/services/' : 'https://liveapi04.cliento.com/api/vip/services/' + key;
+    return fetch(url)
       .then(function (response) {
         return response.json()
       })
@@ -167,7 +168,9 @@
    * @returns {Promise<ResourceServices>}
    */
   function getServiceSchedule (serviceId, key, year, week) {
-    return fetch('https://liveapi04.cliento.com/api/vip/slots/service/' + String(serviceId) + '/resource/' + key + '/' + year + '-' + week + '/')
+    const date = year + '-' + week;
+    const url = key === 'ALL' ? 'https://liveapi04.cliento.com/api/v2/partner/cliento/5twAGxhwQrBx6wXjjJeh3j/slots/service/' + String(serviceId) + '/resource/ALL/' + date : 'https://liveapi04.cliento.com/api/vip/slots/service/' + String(serviceId) + '/resource/' + key + '/' + date;
+    return fetch(url)
       .then(function (response) {
         return response.json()
       })
@@ -346,9 +349,11 @@
       getResourceServices(hairDresser.key).then(function (resourceServices) {
         populateResourceContainer(resourceServices);
       });
-      getResourceSettings(hairDresser.key).then(function (resourceSettings) {
-        selectedOptions.options = resourceSettings;
-      });
+      if (hairDresser.key !== 'ALL') {
+        getResourceSettings(hairDresser.key).then(function (resourceSettings) {
+          selectedOptions.options = resourceSettings;
+        });
+      }
       selectedOptions.hairDresser = hairDresser;
     } else {
       animateContainer(false, '#what');
@@ -604,7 +609,7 @@
       const date = getDateFromSlot(slot.date, slot.time);
       const string = readableDate(date);
       target.innerHTML = '';
-      title.textContent = selectedOptions.service.name;
+      title.textContent = selectedOptions.service.name + ' med ' + slot.resource;
       p.textContent = string;
       target.appendChild(title);
       target.appendChild(p);
