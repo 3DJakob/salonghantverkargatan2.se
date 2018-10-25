@@ -124,13 +124,6 @@ function isValidPin (pin) {
   return false
 }
 
-function error (error) {
-  if (error) {
-    console.log('Error:', error)
-  }
-  window.alert('Fel pin kod, försök igen.')
-}
-
 export function showPinInput (res, stableId) {
   return new Promise(function (resolve, reject) {
     const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/confirm/'
@@ -145,9 +138,9 @@ export function showPinInput (res, stableId) {
         }
       }).then(res => res.json())
         .then(response => resolve(true))
-        .catch(error => error(error))
+        .catch(error => resolve(false))
     } else {
-      error()
+      resolve(false)
     }
   })
 }

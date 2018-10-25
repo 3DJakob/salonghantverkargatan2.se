@@ -417,14 +417,21 @@ function sendRequest () {
     }
 
     if (name && isValidPhone(phone) && isValidEmail(email)) { // valid click!
+      const pinInput = function (response) {
+        showPinInput(response, '5twAGxhwQrBx6wXjjJeh3j').then(function (confirmed) {
+          if (confirmed) {
+            populateConfirmed()
+          } else {
+            window.alert('Fel pin kod, försök igen.')
+            pinInput(response)
+          }
+        })
+      }
+
       const obj = { 'slotKey': selectedOptions.slot.key, name, email, phone, note, 'reminderTypes': ['SMS'] }
-      sendBooking(obj, selectedOptions.options.settings.stableId).then(function (response) {
+      sendBooking(obj, '5twAGxhwQrBx6wXjjJeh3j').then(function (response) {
         if (response) {
-          showPinInput(response, selectedOptions.options.settings.stableId).then(function (confirmed) {
-            if (confirmed) {
-              populateConfirmed()
-            }
-          })
+          pinInput(response)
         }
       })
     }
@@ -443,7 +450,7 @@ function populateConfirmed () {
   const bookingString = readableDate(bookingDate)
   const textElement = document.querySelector('#confirmDate')
   if (textElement) {
-    textElement.textContent = selectedOptions.service.name + ' ' + bookingString
+    textElement.textContent = selectedOptions.service.name + ' med ' + selectedOptions.slot.resource + ' ' + bookingString
   }
   selectedOptions = { hairDresser: {}, options: {}, service: {}, slot: {} }
   populateHairdresserContainer()
