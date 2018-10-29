@@ -82,6 +82,9 @@
 #page3 #imageContainer div:nth-of-type(4) {
   background-image: url(../img/slideshow/slideshow4.jpg);
 }
+#page3 #imageContainer div:nth-of-type(5) {
+  background-image: url(../img/slideshow/slideshow5.jpg);
+}
 
 #page3 #dots {
   display: flex;
@@ -153,6 +156,7 @@
 
 .splitScreen .content {
   margin-top: 15px;
+  margin-bottom: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -161,6 +165,7 @@
 
 .splitScreen .content * {
   width: 90%;
+  color: #000;
 }
 
 .splitScreen .content img {
