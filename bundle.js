@@ -484,7 +484,7 @@
     const target = document.getElementById('resourceScheduleContainer');
     const startDate = activeSchedule;
     const oneWeekForward = addDays(new Date(startDate.getTime()), 6);
-    let match = false;
+    let selected = false;
 
     /** @param {ServiceScheduleSlot} slot */
     const renderEntry = function (slot) {
@@ -502,7 +502,7 @@
         selectedOptions.slot = slot;
         populateSummeryContainer(slot);
         entryElement.classList.add('activeSlot');
-        match = true;
+        selected = true;
       }
       return entryElement
     };
@@ -538,20 +538,26 @@
         day.appendChild(dayDate);
         column.appendChild(day);
         container.appendChild(column);
-        let match = false;
+        let matches = [];
         serviceSchedule.slots.forEach(function (slot) {
           const slotTime = new Date(slot.date);
           if (compareDates(slotTime, i)) {
-            match = true;
-            container.appendChild(renderEntry(slot));
+            matches.push(slot);
           }
         });
-        if (!match) {
+        if (matches[0]) {
+          matches.sort(function (a, b) {
+            return getDateFromSlot(a.date, a.time).getTime() - getDateFromSlot(b.date, b.time).getTime()
+          });
+          matches.forEach(function (slot) {
+            container.appendChild(renderEntry(slot));
+          });
+        } else {
           container.appendChild(renderEmpty());
         }
         target.appendChild(container);
       }
-      if (!match) {
+      if (!selected) {
         animateContainer(false, '#summary');
       }
     }
