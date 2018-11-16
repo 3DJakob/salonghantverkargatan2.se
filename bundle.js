@@ -756,7 +756,7 @@
       dot.classList.add('active');
     }
     if (container) {
-      container.style.transform = 'translateX(' + -20 * (goTo - 1) + '%)';
+      container.style.transform = 'translateX(' + -100 / childs.length * (goTo - 1) + '%)';
     }
   }
 
