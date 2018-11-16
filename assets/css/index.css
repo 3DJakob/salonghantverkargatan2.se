@@ -85,6 +85,12 @@
 #page3 #imageContainer div:nth-of-type(5) {
   background-image: url(../img/slideshow/slideshow5.jpg);
 }
+#page3 #imageContainer div:nth-of-type(6) {
+  background-image: url(../img/slideshow/slideshow6.jpg);
+}
+#page3 #imageContainer div:nth-of-type(7) {
+  background-image: url(../img/slideshow/slideshow7.jpg);
+}
 
 #page3 #dots {
   display: flex;
@@ -113,6 +119,10 @@
 
 #page4 .row {
   width: 100vw;
+}
+
+#page5 h2 {
+  margin-top: 60px;
 }
 
 #map {
@@ -183,7 +193,7 @@
 }
 
 .splitScreen#pur .img {
-  background-image: url(../img/pur3.jpg);
+  background-image: url(../img/pur1.jpg);
 }
 
 .splitScreen#hairtalk .img {
