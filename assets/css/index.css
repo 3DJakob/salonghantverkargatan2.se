@@ -125,6 +125,10 @@
   margin-top: 60px;
 }
 
+#page5 a {
+  color: initial;
+}
+
 #map {
   width: 100%;
   height: 400px;
