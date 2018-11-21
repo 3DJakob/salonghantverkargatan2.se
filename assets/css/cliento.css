@@ -225,6 +225,7 @@ bookingContainer h2 {
   display: flex;
   flex-direction: column;
   width: 90vw;
+  margin: auto;
   max-width: 640px;
   overflow: hidden;
   transition: 512ms;
@@ -255,6 +256,7 @@ bookingContainer h2 {
 #complete div.content a {
   border-color: #333;
   color: #333;
+  background-color: #fff;
 }
 
 #complete div.content a:hover {
