@@ -123,6 +123,14 @@ header a:hover {
   border-bottom: #666 1px solid;
 }
 
+.listItem p:first-of-type {
+  text-align: left;
+}
+
+.listItem p:last-of-type {
+  text-align: right;
+}
+
 .listItem :last-child {
   margin-left: auto;
 }
