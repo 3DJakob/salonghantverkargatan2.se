@@ -1,3 +1,6 @@
+import icalGenerator from 'ical-generator'
+import { addMinutes } from 'date-fns'
+
 import { getHairdressers } from '../data/hairDressers.js'
 import { getResourceSettings, getResourceServices, getServiceSchedule, sendBooking, showPinInput } from './data-handling.js'
 import { smoothScrollTo } from './smooth-scroll.js'
@@ -485,7 +488,11 @@ function populateConfirmed () {
   if (textElement) {
     textElement.textContent = selectedOptions.service.name + ' med ' + selectedOptions.slot.resource + ' ' + bookingString
   }
-  selectedOptions = { hairDresser: {}, options: {}, service: {}, slot: {} }
+
+  const icalDownloadLink = document.querySelector('#ical-download-link')
+  // icalDownloadLink.setAttribute('download', 'hantverkargatan2.ics')
+  icalDownloadLink.setAttribute('href', generateIcal(selectedOptions.slot, selectedOptions.service))
+
   populateHairdresserContainer()
   animateContainer(true, '#complete')
   smoothScrollTo('#page2')
@@ -493,6 +500,7 @@ function populateConfirmed () {
 }
 
 function newBooking () {
+  selectedOptions = { hairDresser: {}, options: {}, service: {}, slot: {} }
   animateContainer(false, '#complete')
   animateContainer(true, '#who')
 }
@@ -530,6 +538,29 @@ function autoScrollSlideshow () {
     window.setTimeout(function () { loop() }, 4000)
   }
   loop()
+}
+
+/**
+ * @param {ServiceScheduleSlot} slot
+ * @param {Service} service
+ * @returns {string}
+ */
+function generateIcal (slot, service) {
+  console.log(slot, service)
+  const bookingDate = getDateFromSlot(slot.date, slot.time)
+  const calendar = icalGenerator()
+
+  calendar.createEvent({
+    start: bookingDate,
+    end: addMinutes(bookingDate, service.minDuration),
+    summary: service.name + ' med ' + slot.resource,
+    location: 'Hantverkargatan 2, 722 12 Västerås, Sweden'
+  })
+
+  const rawData = calendar._generate()
+  const blob = new Blob([rawData], { type: 'text/calendar' })
+
+  return URL.createObjectURL(blob)
 }
 
 /* Export public functions */
