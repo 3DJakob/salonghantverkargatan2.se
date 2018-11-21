@@ -1,17 +1,15 @@
 import nodeResolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs';
+import commonjs from 'rollup-plugin-commonjs'
 
 export default {
-  entry: 'assets/js/app.js',
-  format: 'umd',
+  input: 'assets/js/app.js',
   plugins: [
-    nodeResolve({
-      // use "jsnext:main" if possible
-      // see https://github.com/rollup/rollup/wiki/jsnext:main
-      jsnext: true
-    }),
+    nodeResolve({ jsnext: true }),
     commonjs()
   ],
-  sourceMap: true,
-  dest: 'path/to/your/dest.js'
+  output: {
+    format: 'iife',
+    sourceMap: true,
+    file: 'bundle.js'
+  }
 }

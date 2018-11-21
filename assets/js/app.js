@@ -1,5 +1,5 @@
 import { getHairdressers } from '../data/hairDressers.js'
-import { getResourceSettings, getResourceServices, getServiceSchedule, sendBooking, showPinInput, Service, ServiceSchedule, ServiceScheduleSlot } from './data-handling.js'
+import { getResourceSettings, getResourceServices, getServiceSchedule, sendBooking, showPinInput } from './data-handling.js'
 import { smoothScrollTo } from './smooth-scroll.js'
 import { weekNumber } from './weeknumber.js'
 
@@ -8,6 +8,9 @@ const monthNames = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli
 const dayShortNames = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön']
 
 /** @typedef {import('./data-handling.js').ResourceServices} ResourceServices */
+/** @typedef {import('./data-handling.js').Service} Service */
+/** @typedef {import('./data-handling.js').ServiceSchedule} ServiceSchedule */
+/** @typedef {import('./data-handling.js').ServiceScheduleSlot} ServiceScheduleSlot */
 
 /**
  * @typedef {HairDresser} hairDressers[]

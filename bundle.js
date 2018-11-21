@@ -271,6 +271,9 @@
   const dayShortNames = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön'];
 
   /** @typedef {import('./data-handling.js').ResourceServices} ResourceServices */
+  /** @typedef {import('./data-handling.js').Service} Service */
+  /** @typedef {import('./data-handling.js').ServiceSchedule} ServiceSchedule */
+  /** @typedef {import('./data-handling.js').ServiceScheduleSlot} ServiceScheduleSlot */
 
   /**
    * @typedef {HairDresser} hairDressers[]
@@ -801,4 +804,3 @@
   window['slideshow'] = slideshow;
 
 }());
-//# sourceMappingURL=bundle.js.map
