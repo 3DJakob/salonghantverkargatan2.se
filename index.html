@@ -86,8 +86,10 @@
             <div class="content">
               <h2>Bookning Bekräftad! <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i></h2>
               <p id="confirmDate"></p>
-              <a class="button" onclick="newBooking()">Gör en till bokning</a>
-              <!-- <a href="">Lägg till i Apple kalender</a> -->
+              <div class="row">
+                <a class="button" id="ical-download-link">Lägg till i kalender</a>
+                <a class="button" onclick="newBooking()">Gör en till bokning</a>
+              </div>
             </div>
           </div>
       </div>
@@ -232,6 +234,7 @@
           <a href="http://www.hairtalk.se" target="_blank">hairtalk.se</a>
         </div>
       </div>
+    <script type="text/javascript">window.fs = {}</script>
     <script src="bundle.js"></script>
     <footer>
       Hemsidan presenteras med ❤️ av Unga Utvecklare

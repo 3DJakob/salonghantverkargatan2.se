@@ -263,3 +263,11 @@ bookingContainer h2 {
   background-color: #333;
   color: #fff;
 }
+
+#complete .row {
+  flex-shrink: 0;
+}
+
+#complete .button {
+  margin: 10px;
+}
