@@ -36,6 +36,30 @@ function initiatePage () {
   window.setTimeout(function () { autoScrollSlideshow() }, 4000)
 }
 
+function reRender () {
+  const render = () => {
+    animateContainer(true, '#who')
+    if (selectedOptions.hairDresser.name) {
+      animateContainer(true, '#what')
+      if (selectedOptions.service.group) {
+        animateContainer(true, '#when')
+        if (selectedOptions.slot.key) {
+          animateContainer(true, '#summary')
+        }
+      }
+    }
+  }
+  const complete = /** @type {HTMLElement} */ document.querySelector('#complete')
+  if (complete) {
+    const computedStyle = window.getComputedStyle(complete)
+    if (computedStyle.height !== '0px') {
+      animateContainer(true, '#complete')
+    } else {
+      render()
+    }
+  }
+}
+
 function getToday () {
   return new Date().getDay() ? new Date().getDay() : 7
 }
@@ -507,6 +531,7 @@ function autoScrollSlideshow () {
 
 /* Export public functions */
 window['initiatePage'] = initiatePage
+window['reRender'] = reRender
 window['scheduleArrowClick'] = scheduleArrowClick
 window['sendRequest'] = sendRequest
 window['newBooking'] = newBooking
