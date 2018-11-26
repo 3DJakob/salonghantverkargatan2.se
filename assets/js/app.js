@@ -350,7 +350,7 @@ function populateScheduleDate () {
 /** @param {String} date */
 /** @param {String} time */
 function getDateFromSlot (date, time) {
-  const dateObj = new Date(date + 'T' + time)
+  const dateObj = new Date(date + 'T' + time + 'Z')
   dateObj.setMinutes(dateObj.getMinutes() + dateObj.getTimezoneOffset())
   return dateObj
 }
@@ -546,7 +546,6 @@ function autoScrollSlideshow () {
  * @returns {string}
  */
 function generateIcal (slot, service) {
-  console.log(slot, service)
   const bookingDate = getDateFromSlot(slot.date, slot.time)
   const calendar = icalGenerator()
 
