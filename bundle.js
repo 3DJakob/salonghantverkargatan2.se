@@ -7334,7 +7334,7 @@
 	        key: 'createAttendee',
 	        value: function createAttendee(_attendeeData) {
 	            var attendeeRegEx = /^(.+) ?<([^>]+)>$/;
-	            var attendee$$1 = void 0;
+	            var attendee$1 = void 0;
 
 	            if (_attendeeData instanceof attendee) {
 	                this._data.attendees.push(_attendeeData);
@@ -7344,22 +7344,22 @@
 	            if (typeof _attendeeData === 'string') {
 	                var attendeeRegexMatch = _attendeeData.match(attendeeRegEx);
 	                if (attendeeRegexMatch) {
-	                    attendee$$1 = new attendee({
+	                    attendee$1 = new attendee({
 	                        name: attendeeRegexMatch[1].trim(),
 	                        email: attendeeRegexMatch[2]
 	                    }, this);
 
-	                    this._data.attendees.push(attendee$$1);
-	                    return attendee$$1;
+	                    this._data.attendees.push(attendee$1);
+	                    return attendee$1;
 	                }
 	            }
 	            if (typeof _attendeeData === 'string') {
 	                throw new Error('`attendee` isn\'t formated correctly. See https://github.com/sebbo2002/ical-generator#create' + 'attendeeobject-options');
 	            }
 
-	            attendee$$1 = new attendee(_attendeeData, this);
-	            this._data.attendees.push(attendee$$1);
-	            return attendee$$1;
+	            attendee$1 = new attendee(_attendeeData, this);
+	            this._data.attendees.push(attendee$1);
+	            return attendee$1;
 	        }
 
 	        /**
@@ -7396,10 +7396,10 @@
 	    }, {
 	        key: 'createAlarm',
 	        value: function createAlarm(alarmData) {
-	            var alarm$$1 = new alarm(alarmData, this);
+	            var alarm$1 = new alarm(alarmData, this);
 
-	            this._data.alarms.push(alarm$$1);
-	            return alarm$$1;
+	            this._data.alarms.push(alarm$1);
+	            return alarm$1;
 	        }
 
 	        /**
@@ -7436,10 +7436,10 @@
 	    }, {
 	        key: 'createCategory',
 	        value: function createCategory(categoryData) {
-	            var category$$1 = new category(categoryData, this);
+	            var category$1 = new category(categoryData, this);
 
-	            this._data.categories.push(category$$1);
-	            return category$$1;
+	            this._data.categories.push(category$1);
+	            return category$1;
 	        }
 
 	        /**
@@ -7717,19 +7717,19 @@
 	            }
 
 	            // ATTENDEES
-	            this._data.attendees.forEach(function (attendee$$1) {
-	                g += attendee$$1._generate();
+	            this._data.attendees.forEach(function (attendee) {
+	                g += attendee._generate();
 	            });
 
 	            // ALARMS
-	            this._data.alarms.forEach(function (alarm$$1) {
-	                g += alarm$$1._generate();
+	            this._data.alarms.forEach(function (alarm) {
+	                g += alarm._generate();
 	            });
 
 	            // CATEGORIES
 	            if (this._data.categories.length > 0) {
-	                g += 'CATEGORIES:' + this._data.categories.map(function (category$$1) {
-	                    return category$$1._generate();
+	                g += 'CATEGORIES:' + this._data.categories.map(function (category) {
+	                    return category._generate();
 	                }).join() + '\r\n';
 	            }
 
@@ -8024,9 +8024,9 @@
 	    }, {
 	        key: 'createEvent',
 	        value: function createEvent(eventData) {
-	            var event$$1 = new event(eventData, this);
-	            this._data.events.push(event$$1);
-	            return event$$1;
+	            var event$1 = new event(eventData, this);
+	            this._data.events.push(event$1);
+	            return event$1;
 	        }
 
 	        /**
@@ -8225,8 +8225,8 @@
 	            }
 
 	            // Events
-	            this._data.events.forEach(function (event$$1) {
-	                g += event$$1._generate();
+	            this._data.events.forEach(function (event) {
+	                g += event._generate();
 	            });
 
 	            g += 'END:VCALENDAR';
@@ -13990,7 +13990,7 @@
 	 * @returns {Promise<ResourceSettings>}
 	 */
 	function getResourceSettings (key) {
-	  return fetch('https://liveapi04.cliento.com/api/vip/settings/' + key)
+	  return fetch('https://cliento.com/api/vip/settings/' + key)
 	    .then(function (response) {
 	      return response.json()
 	    })
@@ -14001,7 +14001,7 @@
 	 * @returns {Promise<ResourceServices>}
 	 */
 	function getResourceServices (key) {
-	  const url = key === 'ALL' ? 'https://liveapi04.cliento.com/api/v2/partner/cliento/5twAGxhwQrBx6wXjjJeh3j/services/' : 'https://liveapi04.cliento.com/api/vip/services/' + key;
+	  const url = key === 'ALL' ? 'https://cliento.com/api/v2/partner/cliento/5twAGxhwQrBx6wXjjJeh3j/services/' : 'https://cliento.com/api/vip/services/' + key;
 	  return fetch(url)
 	    .then(function (response) {
 	      return response.json()
@@ -14017,7 +14017,7 @@
 	 */
 	function getServiceSchedule (serviceId, key, year, week) {
 	  const date = year + '-' + week;
-	  const url = key === 'ALL' ? 'https://liveapi04.cliento.com/api/v2/partner/cliento/5twAGxhwQrBx6wXjjJeh3j/slots/service/' + String(serviceId) + '/resource/ALL/' + date : 'https://liveapi04.cliento.com/api/vip/slots/service/' + String(serviceId) + '/resource/' + key + '/' + date;
+	  const url = key === 'ALL' ? 'https://cliento.com/api/v2/partner/cliento/5twAGxhwQrBx6wXjjJeh3j/slots/service/' + String(serviceId) + '/resource/ALL/' + date : 'https://cliento.com/api/vip/slots/service/' + String(serviceId) + '/resource/' + key + '/' + date;
 	  return fetch(url)
 	    .then(function (response) {
 	      return response.json()
@@ -14026,7 +14026,7 @@
 
 	function sendBooking (data, stableId) {
 	  return new Promise(function (resolve, reject) {
-	    const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/';
+	    const url = 'https://cliento.com/api/v2/partner/cliento/' + stableId + '/booking/';
 	    fetch(url, {
 	      method: 'POST',
 	      body: JSON.stringify(data),
@@ -14052,7 +14052,7 @@
 
 	function showPinInput (res, stableId) {
 	  return new Promise(function (resolve, reject) {
-	    const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/confirm/';
+	    const url = 'https://cliento.com/api/v2/partner/cliento/' + stableId + '/booking/confirm/';
 	    const pin = window.prompt('Skriv in pin från SMS', '');
 	    const data = { 'slotKey': res.confirmKey, 'pin': pin };
 	    if (isValidPin(pin)) {
