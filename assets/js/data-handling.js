@@ -64,7 +64,7 @@ import { weekNumber } from './weeknumber.js'
  * @returns {Promise<ResourceSettings>}
  */
 export function getResourceSettings (key) {
-  return fetch('https://liveapi04.cliento.com/api/vip/settings/' + key)
+  return fetch('https://cliento.com/api/vip/settings/' + key)
     .then(function (response) {
       return response.json()
     })
@@ -75,7 +75,7 @@ export function getResourceSettings (key) {
  * @returns {Promise<ResourceServices>}
  */
 export function getResourceServices (key) {
-  const url = key === 'ALL' ? 'https://liveapi04.cliento.com/api/v2/partner/cliento/5twAGxhwQrBx6wXjjJeh3j/services/' : 'https://liveapi04.cliento.com/api/vip/services/' + key
+  const url = key === 'ALL' ? 'https://cliento.com/api/v2/partner/cliento/5twAGxhwQrBx6wXjjJeh3j/services/' : 'https://cliento.com/api/vip/services/' + key
   return fetch(url)
     .then(function (response) {
       return response.json()
@@ -91,7 +91,7 @@ export function getResourceServices (key) {
  */
 export function getServiceSchedule (serviceId, key, year, week) {
   const date = year + '-' + week
-  const url = key === 'ALL' ? 'https://liveapi04.cliento.com/api/v2/partner/cliento/5twAGxhwQrBx6wXjjJeh3j/slots/service/' + String(serviceId) + '/resource/ALL/' + date : 'https://liveapi04.cliento.com/api/vip/slots/service/' + String(serviceId) + '/resource/' + key + '/' + date
+  const url = key === 'ALL' ? 'https://cliento.com/api/v2/partner/cliento/5twAGxhwQrBx6wXjjJeh3j/slots/service/' + String(serviceId) + '/resource/ALL/' + date : 'https://cliento.com/api/vip/slots/service/' + String(serviceId) + '/resource/' + key + '/' + date
   return fetch(url)
     .then(function (response) {
       return response.json()
@@ -100,7 +100,7 @@ export function getServiceSchedule (serviceId, key, year, week) {
 
 export function sendBooking (data, stableId) {
   return new Promise(function (resolve, reject) {
-    const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/'
+    const url = 'https://cliento.com/api/v2/partner/cliento/' + stableId + '/booking/'
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
@@ -126,7 +126,7 @@ function isValidPin (pin) {
 
 export function showPinInput (res, stableId) {
   return new Promise(function (resolve, reject) {
-    const url = 'https://liveapi04.cliento.com/api/v2/partner/cliento/' + stableId + '/booking/confirm/'
+    const url = 'https://cliento.com/api/v2/partner/cliento/' + stableId + '/booking/confirm/'
     const pin = window.prompt('Skriv in pin från SMS', '')
     const data = { 'slotKey': res.confirmKey, 'pin': pin }
     if (isValidPin(pin)) {
