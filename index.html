@@ -1,243 +1,249 @@
 <html>
-  <head>
-    <title>Hantverkargatan 2 - Din personlighet - Vår passion</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <link rel="stylesheet" href="./assets/css/default.css">
-    <link rel="stylesheet" href="./assets/css/index.css">
-    <link rel="stylesheet" href="./assets/css/cliento.css">
-    <link rel="stylesheet" href="./assets/css/phone.css">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-    <link rel="manifest" href="favicon/site.webmanifest">
-    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#333333">
-    <link rel="shortcut icon" href="favicon/favicon.ico">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-config" content="favicon/browserconfig.xml">
-    <meta name="theme-color" content="#ffffff">
-  </head>
-  <body onload="initiatePage()" onresize="reRender()">
-    <div class="page" id="page1">
-      <header>
-        <a href="#page4" class="smooth-scroll">Öppettider</a>
-        <a href="#page5" class="smooth-scroll">Prislista</a>
-      </header>
-      <h1>Välkommen</h1>
-      <a class="button smooth-scroll" href="#page2">Boka online</a>
-      <a class="down smooth-scroll" href="#page2"><i class="fas fa-chevron-down fa-2x"></i></a>
-    </div>
+<head>
+  <title>Hantverkargatan 2 - Din personlighet - Vår passion</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link rel="stylesheet" href="./assets/css/default.css">
+  <link rel="stylesheet" href="./assets/css/index.css">
+  <link rel="stylesheet" href="./assets/css/cliento.css">
+  <link rel="stylesheet" href="./assets/css/phone.css">
 
-    <div class="page" id="page2">
-      <div class="bookingContainer">
-        <div id="who">
-          <div class="content">
-            <h2>Vem vill du ska klippa dig?</h2>
-            <div id="hairdresserContainer">
-              <!-- render hair dressers here! -->
-            </div>
-          </div>
-        </div>
-        <div id="what">
-          <div class="content">
-              <h2>Vad vill du boka?</h2>
-              <div id="resourceServiceContainer">
-                <!-- render resource services here! -->
-              </div>
-          </div>
-        </div>
-        <div id="when">
-          <div class="content">
-              <h2>Vilken tid passar dig?</h2>
-              <div class="infobar">
-                <a onclick="scheduleArrowClick('backward')"><i class="fas fa-chevron-left fa-2x"></i></a>
-                <div id="scheduleInfobar">
-                  <!-- Render date here! -->
-                </div>
-                <a onclick="scheduleArrowClick('forward')"><i class="fas fa-chevron-right fa-2x"></i></a>
-              </div>
-              <div id="resourceScheduleContainer">
-                <!-- render resource services here! -->
-              </div>
-          </div>
-        </div>
-        <div id="summary">
-          <div class="content">
-            <h2>Sammanställning</h2>
-            <div id="summaryTextContainer">
-              <!-- render text here -->
-            </div>
-            <div class="inputcontainer">
-              <div class="row">
-                <input type="text" placeholder="Namn" id="name" autocomplete="name">
-                <input type="tel" placeholder="Telefon" id="phone" autocomplete="tel">
-              </div>
-              <input type="email" placeholder="E-post" id="email" autocomplete="email">
-              <textarea type="text" placeholder="Meddelande" rows="5" id="message"></textarea>
-              <button onclick="sendRequest()">Bekräfta</button>
-              <p>För att bekräfta bokningen behöver du ange en PIN-kod som vi skickar till dig via SMS.</p>
-            </div>
-          </div>
-        </div>
-        <div id="complete">
-            <div class="content">
-              <h2>Bookning Bekräftad! <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i></h2>
-              <p id="confirmDate"></p>
-              <div class="row">
-                <a class="button" id="ical-download-link">Lägg till i kalender</a>
-                <a class="button" onclick="newBooking()">Gör en till bokning</a>
-              </div>
-            </div>
-          </div>
-      </div>
-    </div>
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="manifest" href="favicon/site.webmanifest">
+  <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#333333">
+  <link rel="shortcut icon" href="favicon/favicon.ico">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-config" content="favicon/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
+</head>
 
-    <div class="page" id="page3">
-      <div id="imageContainer">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <div id="dots">
-          <a id="slideshow1" class="active" onclick="slideshow(1)"></a>
-          <a id="slideshow2" onclick="slideshow(2)"></a>
-          <a id="slideshow3" onclick="slideshow(3)"></a>
-          <a id="slideshow4" onclick="slideshow(4)"></a>
-          <a id="slideshow5" onclick="slideshow(5)"></a>
-          <a id="slideshow6" onclick="slideshow(6)"></a>
-          <a id="slideshow7" onclick="slideshow(7)"></a>
-        </div>
-    </div>
+<body onload="initiatePage()" onresize="reRender()">
+  <div class="page" id="page1">
+    <header>
+      <a href="#page4" class="smooth-scroll">Öppettider</a>
+      <a href="#page5" class="smooth-scroll">Prislista</a>
+    </header>
+    <h1>Välkommen</h1>
+    <a class="button smooth-scroll" href="#page2">Boka online</a>
+    <a class="down smooth-scroll" href="#page2"><i class="fas fa-chevron-down fa-2x"></i></a>
+  </div>
 
-    <div class="insert">
-      <h2>Kom förbi!</h2>
-      <p>Till oss är du alltid välkommen att läsa en tidning och koppla av i vårat moderna och hemtrevliga vardagsrum. Eller varför inte komma förbi och klappa hunden?</p>
-    </div>
-    <div class="page" id="page4">
-      <div class="row">
-        <iframe id="map" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2018.3856806326999!2d16.543896999999998!3d59.609941000000006!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465e613f18f635ab%3A0xbcb658188324cefd!2sSalong+Hantverkargatan+2!5e0!3m2!1ssv!2sse!4v1420658502846" width="100%" height="100%" frameborder="0"></iframe>
-        <div id="OpeningHours">
-          <p>Måndag: 10:00-17:00</p>
-          <p>Tisdag: 10:00-17:00</p>
-          <p>Onsdag: 10:00-17:00</p>
-          <p>Torsdag: 10:00-17:00</p>
-          <p>Fredag: 10:00-17:00</p>
-          <p>Lördag: Stängt</p>
-          <p>Söndag: Stängt</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Prislista -->
-    <div class="page" id="page5">
-      <h2>Klippning</h2>
-      <div class="listItem">
-        <p>Klippning</p>
-        <p>490 kr</p>
-      </div>
-      <div class="listItem">
-        <p>Barnklippning</p>
-        <p>350 kr</p>
-      </div>
-      <div class="listItem">
-        <p>Lugg</p>
-        <p>150 kr</p>
-      </div>
-
-      <h2>Färg/Slingor</h2>
-      <div class="listItem">
-        <p>Kort hår</p>
-        <p>1100 kr (inkl klipp 1495 kr)</p>
-      </div>
-      <div class="listItem">
-        <p>Axellångt hår</p>
-        <p>1300 kr (inkl klipp 1695)</p>
-      </div>
-      <div class="listItem">
-        <p>Långt hår</p>
-        <p>1500 kr (inkl klipp 1895)</p>
-      </div>
-      <div class="listItem">
-        <p>Utväxtfärgning max 2 cm (ej sling)</p>
-        <p>1000 kr</p>
-      </div>
-
-      <h2>Permanent</h2>
-      <div class="listItem">
-        <p>Kort hår inkl klippning</p>
-        <p>1695 kr</p>
-      </div>
-      <div class="listItem">
-        <p>Långt hår inkl klippning</p>
-        <p>1945 kr</p>
-      </div>
-
-      <h2>Sminkning</h2>
-      <p class="sminkning">För att boka din makeup och styling, ring <a href="tel:021-141000">021-141000</a></p>
-
-      <h2>Övrigt</h2>
-      <div class="listItem">
-        <p>Tvätt & fön eller läggning</p>
-        <p>400 kr</p>
-      </div>
-      <div class="listItem">
-        <p>Ögonfrans eller bryn</p>
-        <p>200 kr</p>
-      </div>
-      <div class="listItem">
-        <p>Ögonfrans & bryn</p>
-        <p>250 kr</p>
-      </div>
-      <div class="listItem">
-        <p>Endast plockning av ögonbryn</p>
-        <p>från 100 kr</p>
-      </div>
-      <div class="listItem">
-        <p>Uppsättning eller festfix</p>
-        <p>enligt överenskommelse</p>
-      </div>
-    </div>
-    <div class="splitScreen" id="davines">
-      <div class="img"></div>
-      <div class="content">
-        <img src="./assets/img/logo/davines.png" alt="">
-        <p>
-          Vårat produktsortiment är ett helhetskoncept med Davines kvalitativa produkter. Från färg till hårvård och styling. Davines produkter bygger på hållbarhet för miljö och människa. Det är otroligt viktigt för oss! På så vis drar vi vårt strå till stacken för att värna vår planet, samtidigt som vi får ett toppenresultat för håret och en hälsosammare produkt för oss och för våra kunder. Win-win helt enkelt!
-        </p>
-        <p>Läs mer om Davines på deras hemsida eller kom in till oss så berättar vi mer!</p>
-        <a href="https://us.davines.com" target="_blank">davines.com</a>
-        <a href="https://www.krafthaircare.se" target="_blank">krafthaircare.se</a>
-      </div>
-    </div>
-    <div class="splitScreen" id="pur">
-      <div class="content">
-        <img src="./assets/img/logo/pur.png" alt="">
-        <p>
-          Marknadens mest hudvårdande makeup. Mineral makeup som vårdar huden på samma sätt som hudvårdsprodukter. Gå gärna in och läs mer på deras hemsida eller kom in och prata med oss om produkten!
-        </p>
-        <a href="http://www.purcosmetics.se" target="_blank">purconsmetics.se</a>
-      </div>
-      <div class="img"></div>
-    </div>
-    <div class="splitScreen" id="hairtalk">
-        <div class="img"></div>
+  <div class="page" id="page2">
+    <div class="bookingContainer">
+      <div id="who">
         <div class="content">
-          <img src="./assets/img/logo/hairtalk.png" alt="">
-          <p>Det finns inte många begränsningar med Hairtalk. Oavsett längd, tunt eller tjockt hår, så går det att hitta på olika lösningar som passar de flesta. Drömmer du inte om långt hår, kan Hairtalk även användas som en färgförändring i form av slingor eller liknande. Möjligheterna är många. Vi är utbildade i Hairtalk Advance.</p>
-          <a href="http://www.hairtalk.se" target="_blank">hairtalk.se</a>
+          <h2>Vem vill du ska klippa dig?</h2>
+          <div id="hairdresserContainer">
+            <!-- render hair dressers here! -->
+          </div>
         </div>
       </div>
-    <script type="text/javascript">window.fs = {}</script>
-    <script src="bundle.js"></script>
-    <footer>
-      Hemsidan presenteras med ❤️ av Unga Utvecklare
-    </footer>
-  </body>
+      <div id="what">
+        <div class="content">
+          <h2>Vad vill du boka?</h2>
+          <div id="resourceServiceContainer">
+            <!-- render resource services here! -->
+          </div>
+        </div>
+      </div>
+      <div id="when">
+        <div class="content">
+          <h2>Vilken tid passar dig?</h2>
+          <div class="infobar">
+            <a onclick="scheduleArrowClick('backward')"><i class="fas fa-chevron-left fa-2x"></i></a>
+            <div id="scheduleInfobar">
+              <!-- Render date here! -->
+            </div>
+            <a onclick="scheduleArrowClick('forward')"><i class="fas fa-chevron-right fa-2x"></i></a>
+          </div>
+          <div id="resourceScheduleContainer">
+            <!-- render resource services here! -->
+          </div>
+        </div>
+      </div>
+      <div id="summary">
+        <div class="content">
+          <h2>Sammanställning</h2>
+          <div id="summaryTextContainer">
+            <!-- render text here -->
+          </div>
+          <div class="inputcontainer">
+            <div class="row">
+              <input type="text" placeholder="Namn" id="name" autocomplete="name">
+              <input type="tel" placeholder="Telefon" id="phone" autocomplete="tel">
+            </div>
+            <input type="email" placeholder="E-post" id="email" autocomplete="email">
+            <textarea type="text" placeholder="Meddelande" rows="5" id="message"></textarea>
+            <button onclick="sendRequest()">Bekräfta</button>
+            <p>För att bekräfta bokningen behöver du ange en PIN-kod som vi skickar till dig via SMS.</p>
+          </div>
+        </div>
+      </div>
+      <div id="complete">
+        <div class="content">
+          <h2>Bookning Bekräftad! <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i></h2>
+          <p id="confirmDate"></p>
+          <div class="row">
+            <a class="button" id="ical-download-link">Lägg till i kalender</a>
+            <a class="button" onclick="newBooking()">Gör en till bokning</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page3">
+    <div id="imageContainer">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div id="dots">
+      <a id="slideshow1" class="active" onclick="slideshow(1)"></a>
+      <a id="slideshow2" onclick="slideshow(2)"></a>
+      <a id="slideshow3" onclick="slideshow(3)"></a>
+      <a id="slideshow4" onclick="slideshow(4)"></a>
+      <a id="slideshow5" onclick="slideshow(5)"></a>
+      <a id="slideshow6" onclick="slideshow(6)"></a>
+      <a id="slideshow7" onclick="slideshow(7)"></a>
+    </div>
+  </div>
+
+  <div class="insert">
+    <h2>Kom förbi!</h2>
+    <p>Till oss är du alltid välkommen att läsa en tidning och koppla av i vårat moderna och hemtrevliga vardagsrum. Eller varför inte komma förbi och klappa hunden?</p>
+  </div>
+  <div class="page" id="page4">
+    <div class="row">
+      <iframe id="map" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2018.3856806326999!2d16.543896999999998!3d59.609941000000006!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465e613f18f635ab%3A0xbcb658188324cefd!2sSalong+Hantverkargatan+2!5e0!3m2!1ssv!2sse!4v1420658502846" width="100%" height="100%" frameborder="0"></iframe>
+      <div id="OpeningHours">
+        <p>Måndag: 10:00-17:00</p>
+        <p>Tisdag: 10:00-17:00</p>
+        <p>Onsdag: 10:00-17:00</p>
+        <p>Torsdag: 10:00-17:00</p>
+        <p>Fredag: 10:00-17:00</p>
+        <p>Lördag: Stängt</p>
+        <p>Söndag: Stängt</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prislista -->
+  <div class="page" id="page5">
+    <h2>Klippning</h2>
+    <div class="listItem">
+      <p>Klippning</p>
+      <p>520 kr</p>
+    </div>
+    <div class="listItem">
+      <p>Barnklippning</p>
+      <p>380 kr</p>
+    </div>
+    <div class="listItem">
+      <p>Lugg</p>
+      <p>150 kr</p>
+    </div>
+
+    <h2>Färg/Slingor</h2>
+    <div class="listItem">
+      <p>Kort hår</p>
+      <p>1200 kr (inkl klipp 1620 kr)</p>
+    </div>
+    <div class="listItem">
+      <p>Axellångt hår</p>
+      <p>1440 kr (inkl klipp 1860 kr)</p>
+    </div>
+    <div class="listItem">
+      <p>Långt hår</p>
+      <p>1800 kr (inkl klipp 2220 kr)</p>
+    </div>
+    <div class="listItem">
+      <p>Utväxtfärgning max 2 cm (ej sling)</p>
+      <p>1100 kr (inkl klipp 1520 kr)</p>
+    </div>
+
+    <h2>Permanent</h2>
+    <div class="listItem">
+      <p>Kort hår inkl klippning</p>
+      <p>1830 kr</p>
+    </div>
+    <div class="listItem">
+      <p>Långt hår inkl klippning</p>
+      <p>2100 kr</p>
+    </div>
+
+    <h2>Sminkning</h2>
+    <p class="sminkning">För att boka din makeup och styling, ring <a href="tel:021-141000">021-141000</a></p>
+
+    <h2>Övrigt</h2>
+    <div class="listItem">
+      <p>Tvätt & fön eller läggning</p>
+      <p>430 kr</p>
+    </div>
+    <div class="listItem">
+      <p>Ögonfrans eller bryn</p>
+      <p>200 kr</p>
+    </div>
+    <div class="listItem">
+      <p>Ögonfrans & bryn</p>
+      <p>250 kr</p>
+    </div>
+    <div class="listItem">
+      <p>Endast plockning av ögonbryn</p>
+      <p>från 100 kr</p>
+    </div>
+    <div class="listItem">
+      <p>Uppsättning eller festfix</p>
+      <p>enligt överenskommelse</p>
+    </div>
+
+    <p>Priser från 1 november 2019</p>
+
+  </div>
+  <div class="splitScreen" id="davines">
+    <div class="img"></div>
+    <div class="content">
+      <img src="./assets/img/logo/davines.png" alt="">
+      <p>
+        Vårat produktsortiment är ett helhetskoncept med Davines kvalitativa produkter. Från färg till hårvård och styling. Davines produkter bygger på hållbarhet för miljö och människa. Det är otroligt viktigt för oss! På så vis drar vi vårt strå till stacken för att värna vår planet, samtidigt som vi får ett toppenresultat för håret och en hälsosammare produkt för oss och för våra kunder. Win-win helt enkelt!
+      </p>
+      <p>Läs mer om Davines på deras hemsida eller kom in till oss så berättar vi mer!</p>
+      <a href="https://us.davines.com" target="_blank">davines.com</a>
+      <a href="https://www.krafthaircare.se" target="_blank">krafthaircare.se</a>
+    </div>
+  </div>
+  <div class="splitScreen" id="pur">
+    <div class="content">
+      <img src="./assets/img/logo/pur.png" alt="">
+      <p>
+        Marknadens mest hudvårdande makeup. Mineral makeup som vårdar huden på samma sätt som hudvårdsprodukter. Gå gärna in och läs mer på deras hemsida eller kom in och prata med oss om produkten!
+      </p>
+      <a href="http://www.purcosmetics.se" target="_blank">purconsmetics.se</a>
+    </div>
+    <div class="img"></div>
+  </div>
+  <div class="splitScreen" id="hairtalk">
+    <div class="img"></div>
+    <div class="content">
+      <img src="./assets/img/logo/hairtalk.png" alt="">
+      <p>Det finns inte många begränsningar med Hairtalk. Oavsett längd, tunt eller tjockt hår, så går det att hitta på olika lösningar som passar de flesta. Drömmer du inte om långt hår, kan Hairtalk även användas som en färgförändring i form av slingor eller liknande. Möjligheterna är många. Vi är utbildade i Hairtalk Advance.</p>
+      <a href="http://www.hairtalk.se" target="_blank">hairtalk.se</a>
+    </div>
+  </div>
+  <script type="text/javascript">window.fs = {}</script>
+  <script src="bundle.js"></script>
+  <footer>
+    Hemsidan presenteras med ❤️ av Unga Utvecklare
+  </footer>
+</body>
+
 </html>
