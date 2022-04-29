@@ -6,20 +6,10 @@ export function getHairdressers () {
       'img': 'sofia',
       'key': 'QN225Q'
     }, {
-      'name': 'Petra',
-      'lastname': 'Larsson',
-      'img': 'petra',
-      'key': '3DXXZ3'
-    }, {
       'name': 'Caroline',
       'lastname': 'Asplund',
       'img': 'caroline',
       'key': '36MMMQ'
-    }, {
-      'name': 'Hannah',
-      'lastname': 'Åkermark',
-      'img': 'hannah',
-      'key': '3MZVNQ'
     }, {
       'name': 'Josefina',
       'lastname': 'Nettelmark',

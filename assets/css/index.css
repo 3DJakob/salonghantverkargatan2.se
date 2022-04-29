@@ -88,9 +88,6 @@
 #page3 #imageContainer div:nth-of-type(6) {
   background-image: url(../img/slideshow/slideshow6.jpg);
 }
-#page3 #imageContainer div:nth-of-type(7) {
-  background-image: url(../img/slideshow/slideshow7.jpg);
-}
 
 #page3 #dots {
   display: flex;
