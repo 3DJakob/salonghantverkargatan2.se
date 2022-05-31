@@ -13852,11 +13852,6 @@
 	function getHairdressers () {
 	  const data = [
 	    {
-	      'name': 'Sofia',
-	      'lastname': 'Seppälä',
-	      'img': 'sofia',
-	      'key': 'QN225Q'
-	    }, {
 	      'name': 'Caroline',
 	      'lastname': 'Asplund',
 	      'img': 'caroline',
