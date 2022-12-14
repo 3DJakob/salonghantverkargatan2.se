@@ -5,7 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
   <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   <link rel="stylesheet" href="./assets/css/default.css">
   <link rel="stylesheet" href="./assets/css/index.css">
   <link rel="stylesheet" href="./assets/css/cliento.css">
@@ -24,31 +25,37 @@
 
 <body onload="initiatePage()" onresize="reRender()">
   <div class="page" id="page1">
-    <header>
+    <!-- <header>
       <a href="#page4" class="smooth-scroll">Öppettider</a>
       <a href="#page5" class="smooth-scroll">Prislista</a>
-    </header>
+    </header> -->
     <h1>Välkommen</h1>
-    <a class="button smooth-scroll" href="#page2">Boka online</a>
-    <a class="down smooth-scroll" href="#page2"><i class="fas fa-chevron-down fa-2x"></i></a>
+    <!-- <a class="button smooth-scroll" href="#page2">Boka online</a> -->
+    <a class="button" href="https://cliento.com/bookingapp/salong-hantverkargatan-2/hantverkargatan/">Boka online</a>
+    <!-- <a class="down smooth-scroll" href="#page2"><i class="fas fa-chevron-down fa-2x"></i></a> -->
   </div>
 
   <div class="page" id="page2">
-    <div class="bookingContainer">
+
+    <h2 class="info">För mer info, besök gärna oss på plats eller gå in på våra sociala kanaler.</h2>
+
+    <img class="coverImg" src="assets/img/slideshow/slideshow2.jpg" alt="">
+
+    <!-- <div class="bookingContainer">
       <div id="who">
         <div class="content">
           <h2>Vem vill du ska klippa dig?</h2>
-          <div id="hairdresserContainer">
-            <!-- render hair dressers here! -->
-          </div>
+          <div id="hairdresserContainer"> -->
+    <!-- render hair dressers here! -->
+    <!-- </div>
         </div>
       </div>
       <div id="what">
         <div class="content">
           <h2>Vad vill du boka?</h2>
-          <div id="resourceServiceContainer">
-            <!-- render resource services here! -->
-          </div>
+          <div id="resourceServiceContainer"> -->
+    <!-- render resource services here! -->
+    <!-- </div>
         </div>
       </div>
       <div id="when">
@@ -56,22 +63,22 @@
           <h2>Vilken tid passar dig?</h2>
           <div class="infobar">
             <a onclick="scheduleArrowClick('backward')"><i class="fas fa-chevron-left fa-2x"></i></a>
-            <div id="scheduleInfobar">
-              <!-- Render date here! -->
-            </div>
+            <div id="scheduleInfobar"> -->
+    <!-- Render date here! -->
+    <!-- </div>
             <a onclick="scheduleArrowClick('forward')"><i class="fas fa-chevron-right fa-2x"></i></a>
           </div>
-          <div id="resourceScheduleContainer">
-            <!-- render resource services here! -->
-          </div>
+          <div id="resourceScheduleContainer"> -->
+    <!-- render resource services here! -->
+    <!-- </div>
         </div>
       </div>
       <div id="summary">
         <div class="content">
           <h2>Sammanställning</h2>
-          <div id="summaryTextContainer">
-            <!-- render text here -->
-          </div>
+          <div id="summaryTextContainer"> -->
+    <!-- render text here -->
+    <!-- </div>
           <div class="inputcontainer">
             <div class="row">
               <input type="text" placeholder="Namn" id="name" autocomplete="name">
@@ -94,10 +101,10 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 
-  <div class="page" id="page3">
+  <!-- <div class="page" id="page3">
     <div id="imageContainer">
       <div></div>
       <div></div>
@@ -114,16 +121,19 @@
       <a id="slideshow5" onclick="slideshow(5)"></a>
       <a id="slideshow6" onclick="slideshow(6)"></a>
     </div>
-  </div>
+  </div> -->
 
-  <div class="insert">
+  <!-- <div class="insert">
     <h2>Kom förbi!</h2>
     <p>Till oss är du alltid välkommen att läsa en tidning och koppla av i vårat moderna och hemtrevliga vardagsrum.</p>
-  </div>
+  </div> -->
+
   <div class="page" id="page4">
     <div class="row">
-      <iframe id="map" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2018.3856806326999!2d16.543896999999998!3d59.609941000000006!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465e613f18f635ab%3A0xbcb658188324cefd!2sSalong+Hantverkargatan+2!5e0!3m2!1ssv!2sse!4v1420658502846" width="100%" height="100%" frameborder="0"></iframe>
-      <div id="OpeningHours">
+      <iframe id="map"
+        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2018.3856806326999!2d16.543896999999998!3d59.609941000000006!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465e613f18f635ab%3A0xbcb658188324cefd!2sSalong+Hantverkargatan+2!5e0!3m2!1ssv!2sse!4v1420658502846"
+        width="100%" height="100%" frameborder="0"></iframe>
+      <!-- <div id="OpeningHours">
         <p>Måndag: 10:00-17:00</p>
         <p>Tisdag: 10:00-17:00</p>
         <p>Onsdag: 10:00-17:00</p>
@@ -131,12 +141,12 @@
         <p>Fredag: 10:00-17:00</p>
         <p>Lördag: Stängt</p>
         <p>Söndag: Stängt</p>
-      </div>
+      </div> -->
     </div>
   </div>
 
   <!-- Prislista -->
-  <div class="page" id="page5">
+  <!-- <div class="page" id="page5">
     <h2>Klippning</h2>
     <div class="listItem">
       <p>Klippning</p>
@@ -206,13 +216,17 @@
 
     <p>Priser från 1 november 2019</p>
 
-  </div>
-  <div class="splitScreen" id="davines">
+  </div> -->
+
+  <!-- <div class="splitScreen" id="davines">
     <div class="img"></div>
     <div class="content">
       <img src="./assets/img/logo/davines.png" alt="">
       <p>
-        Vårat produktsortiment är ett helhetskoncept med Davines kvalitativa produkter. Från färg till hårvård och styling. Davines produkter bygger på hållbarhet för miljö och människa. Det är otroligt viktigt för oss! På så vis drar vi vårt strå till stacken för att värna vår planet, samtidigt som vi får ett toppenresultat för håret och en hälsosammare produkt för oss och för våra kunder. Win-win helt enkelt!
+        Vårat produktsortiment är ett helhetskoncept med Davines kvalitativa produkter. Från färg till hårvård och
+        styling. Davines produkter bygger på hållbarhet för miljö och människa. Det är otroligt viktigt för oss! På så
+        vis drar vi vårt strå till stacken för att värna vår planet, samtidigt som vi får ett toppenresultat för håret
+        och en hälsosammare produkt för oss och för våra kunder. Win-win helt enkelt!
       </p>
       <p>Läs mer om Davines på deras hemsida eller kom in till oss så berättar vi mer!</p>
       <a href="https://us.davines.com" target="_blank">davines.com</a>
@@ -223,7 +237,8 @@
     <div class="content">
       <img src="./assets/img/logo/pur.png" alt="">
       <p>
-        Marknadens mest hudvårdande makeup. Mineral makeup som vårdar huden på samma sätt som hudvårdsprodukter. Gå gärna in och läs mer på deras hemsida eller kom in och prata med oss om produkten!
+        Marknadens mest hudvårdande makeup. Mineral makeup som vårdar huden på samma sätt som hudvårdsprodukter. Gå
+        gärna in och läs mer på deras hemsida eller kom in och prata med oss om produkten!
       </p>
       <a href="http://www.purcosmetics.se" target="_blank">purconsmetics.se</a>
     </div>
@@ -233,15 +248,17 @@
     <div class="img"></div>
     <div class="content">
       <img src="./assets/img/logo/hairtalk.png" alt="">
-      <p>Det finns inte många begränsningar med Hairtalk. Oavsett längd, tunt eller tjockt hår, så går det att hitta på olika lösningar som passar de flesta. Drömmer du inte om långt hår, kan Hairtalk även användas som en färgförändring i form av slingor eller liknande. Möjligheterna är många. Vi är utbildade i Hairtalk Advance.</p>
+      <p>Det finns inte många begränsningar med Hairtalk. Oavsett längd, tunt eller tjockt hår, så går det att hitta på
+        olika lösningar som passar de flesta. Drömmer du inte om långt hår, kan Hairtalk även användas som en
+        färgförändring i form av slingor eller liknande. Möjligheterna är många. Vi är utbildade i Hairtalk Advance.</p>
       <a href="http://www.hairtalk.se" target="_blank">hairtalk.se</a>
     </div>
-  </div>
+  </div> -->
   <script type="text/javascript">window.fs = {}</script>
   <script src="bundle.js"></script>
-  <footer>
+  <!-- <footer>
     Hemsidan presenteras med ❤️ av Unga Utvecklare
-  </footer>
+  </footer> -->
 </body>
 
 </html>

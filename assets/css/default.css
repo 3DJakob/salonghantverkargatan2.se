@@ -3,13 +3,23 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #fff;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: 'Oswald', sans-serif;
 }
 
-h1, h2, h3, p, a, input, button, footer {
+h1,
+h2,
+h3,
+p,
+a,
+input,
+button,
+footer {
   font-family: sans-serif;
   text-align: center;
 }
@@ -20,7 +30,7 @@ a {
 }
 
 .button {
-  background-color:rgba( 26, 24, 32, 0.8);
+  background-color: rgba(26, 24, 32, 0.8);
   color: #fff;
   border: 1px solid #FFF9C9;
   border-radius: 3px;
@@ -31,7 +41,7 @@ a {
 }
 
 .button:hover {
-  background-color:rgba(26, 24, 32, 1);
+  background-color: rgba(26, 24, 32, 1);
 }
 
 button {
@@ -45,7 +55,9 @@ button:hover {
   color: #333;
 }
 
-input, textarea, button {
+input,
+textarea,
+button {
   text-align: left;
   color: #fff;
   background-color: #333;
@@ -79,7 +91,8 @@ header a:hover {
   background-color: rgba(255, 255, 255, 0.1)
 }
 
-.page, .insert {
+.page,
+.insert {
   width: 100vw;
   display: flex;
   align-items: center;
@@ -158,8 +171,19 @@ footer {
 }
 
 @keyframes shake {
-  0% {transform: translateX(0);}
-  25% {transform: translateX(10px);}
-  75% {transform: translateX(-10px);}
-  100% {transform: translateX(0);}
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(10px);
+  }
+
+  75% {
+    transform: translateX(-10px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
